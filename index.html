@@ -1,160 +1,1018 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <script src="https://kit.fontawesome.com/9db8cdd1ce.js" crossorigin="anonymous"></script>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="shortcut icon" type="x-icon" href="favicon.ico">
-        <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Lilita+One&display=swap" rel="stylesheet">    
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Don't Be Late!</title>
-        <style>
-            h1{
-                color:#38b6ff;
-                font-family: 'Lilita One';
-                font-size: 48px;
-            }
-            p{
-                font-family: 'Balsamiq Sans';
-            }
-            body {
-                margin: 0;
-                font-family: Arial, sans-serif;
-                height: 100vh;
-                overflow: hidden;
-            }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Don't Be Late! — Math Learning Game for Students</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f7f8fc;
+  --surface2: #eef0f7;
+  --yellow: #F5A800;
+  --orange: #FF6B35;
+  --green: #0DB067;
+  --blue: #2B7FFF;
+  --pink: #E8198B;
+  --white: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: rgba(0,0,0,0.08);
+  --font-display: 'Fredoka One', cursive;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+}
 
-            .hero {
-                position: relative;
-                width: 100%;
-                height: 100vh;
-                background: url('background.png') center/cover no-repeat;
-            }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
-            .overlay {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.8);
-            }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
 
-            .content {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                color: white;
-                text-align: center;
-                width: 90%;
-            }
+/* ── FLOATING MATH SYMBOLS BACKGROUND ── */
+.math-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10; /* floaters above sections but non-interactive */
+  overflow: hidden;
+}
+.math-symbol {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: var(--size, 2rem);
+  color: var(--sym-color, rgba(245,168,0,0.10));
+  user-select: none;
+  animation: floatSym var(--dur, 18s) ease-in-out infinite var(--delay, 0s);
+  transform-origin: center;
+}
+@keyframes floatSym {
+  0%   { transform: translateY(0px) rotate(var(--rot0, 0deg)); opacity: var(--op, 0.08); }
+  33%  { transform: translateY(-22px) rotate(var(--rot1, 8deg)); opacity: calc(var(--op, 0.08) * 1.4); }
+  66%  { transform: translateY(10px) rotate(var(--rot2, -5deg)); opacity: var(--op, 0.08); }
+  100% { transform: translateY(0px) rotate(var(--rot0, 0deg)); opacity: var(--op, 0.08); }
+}
 
-            .logo {
-                width: 80px;
-            }
-            
-            input[type="email"] {
-                padding: 12px;
-                border-radius: 8px;
-                border: none;
-                width: 260px;
-                margin-top: 20px;
-                font-size: 16px;
-            }
+/* ── TYPOGRAPHY ── */
+.display { font-family: var(--font-display); }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(245,168,0,0.12);
+  border: 1px solid rgba(245,168,0,0.3);
+  color: #c47f00;
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
 
-            button {
-                margin-top: 20px;
-                padding: 12px 22px;
-                border: none;
-                border-radius: 8px;
-                background: #38b6ff;
-                font-size: 16px;
-                cursor: pointer;
-            }
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px 100px;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+}
 
-            .watch-trailer-{
-                background-color: transparent;
-                color: white;
-            }
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(245,168,0,0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(255,107,53,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 90% 60%, rgba(43,127,255,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
 
-            .lilita-one-regular {
-            font-family: "Lilita One", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-            }
+.hero-grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+  pointer-events: none;
+}
 
-            .balsamiq-sans-regular {
-            font-family: "Balsamiq Sans", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-            }
+.hero-content { position: relative; z-index: 2; max-width: 860px; }
 
-            .balsamiq-sans-bold {
-            font-family: "Balsamiq Sans", sans-serif;
-            font-weight: 700;
-            font-style: normal;
-            }
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 9vw, 7rem);
+  line-height: 1;
+  letter-spacing: -0.5px;
+  margin: 20px 0 24px;
+  color: var(--text);
+}
+.hero-title em {
+  font-style: normal;
+  color: var(--yellow);
+  text-shadow: 0 0 60px rgba(245,168,0,0.2);
+}
 
-            .balsamiq-sans-regular-italic {
-            font-family: "Balsamiq Sans", sans-serif;
-            font-weight: 400;
-            font-style: italic;
-            }
+.hero-sub {
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  color: var(--muted);
+  max-width: 520px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+  font-weight: 500;
+}
+.hero-sub strong { color: var(--text); font-weight: 700; }
 
-            .balsamiq-sans-bold-italic {
-            font-family: "Balsamiq Sans", sans-serif;
-            font-weight: 700;
-            font-style: italic;
-            }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 34px;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.97rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s;
+  letter-spacing: 0.01em;
+}
+.btn-yellow {
+  background: var(--yellow);
+  color: #fff;
+}
+.btn-yellow:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 40px rgba(245,168,0,0.35);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--border);
+}
+.btn-outline:hover {
+  border-color: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.03);
+}
 
-            .watch-trailer-:hover {color: #919191; }
+/* ── VIDEO SECTION ── */
+#trailer {
+  padding: 40px 24px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffffff;
+  position: relative;
+  z-index: 1;
+}
 
-            .email-button-:hover { background: #21668d;}
-        </style>
-    </head>
+.video-wrapper { position:relative;
+  width: 100%;
+  max-width: 1000px;
+  aspect-ratio: 16/9;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
+}
 
-    <body>
-        <div class="hero">
-            <div class="overlay"></div>
+.video-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #f0f4ff 0%, #e8ecf8 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  color: var(--muted);
+}
 
-            <div class="content">
-                <img src="KonitaGamesLogo.png" class="logo">
+.play-btn {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 40px rgba(245,168,0,0.3);
+}
+.play-btn:hover { transform: scale(1.1); box-shadow: 0 0 60px rgba(245,168,0,0.45); }
+.play-btn svg { fill: #fff; margin-left: 4px; }
+.video-label { font-weight: 700; font-size: 0.9rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
 
-                <h1>DONT BE LATE!</h1>
-                <p>Make learning mathematics fun and engaging for your students through gamification.</p>
+/* ── SECTION COMMONS ── */
+section { padding: 100px 24px; position: relative; z-index: 1; }
+.container { max-width: 1080px; margin: 0 auto; }
+.section-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green);
+  display: block;
+  margin-bottom: 14px;
+}
+.section-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  line-height: 1.08;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.section-sub {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  font-weight: 500;
+  max-width: 560px;
+}
 
-                <form id="signup-form" onsubmit="joinWaitlist(document.getElementById('email').value);" action="https://docs.google.com/forms/d/e/1FAIpQLSdFlpwI87u4TVOe0z7yCAAUNd32hIsdw3bRUBA5GfZnImmm0g/formResponse" method="POST" target="hidden_iframe">
-                <input type="email" name="entry.837670416" id="email" required placeholder="Enter email address">
-                <button class="email-button-" type="submit">Join Waitlist</button>
-                </form>
+/* ── HOW STUDENTS LEARN ── */
+#learn {
+  background: var(--surface);
+}
 
-                <iframe name="hidden_iframe" style="display:none;"></iframe>
+.learn-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 60px;
+}
+@media(max-width: 768px) { .learn-grid { grid-template-columns: 1fr; } }
 
-                <button class="watch-trailer-" onclick="watchTrailer()">Watch the Trailer <i class="fa-solid fa-play"></i></button>
-            </div>
+.learn-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+.learn-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 50px rgba(0,0,0,0.1);
+}
+.learn-card:nth-child(1):hover { border-color: rgba(245,168,0,0.4); }
+.learn-card:nth-child(2):hover { border-color: rgba(43,127,255,0.4); }
+.learn-card:nth-child(3):hover { border-color: rgba(13,176,103,0.4); }
+
+.screenshot-placeholder {
+  width: 100%;
+  aspect-ratio: 16/10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+.screenshot-placeholder::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(0,0,0,0.025) 10px,
+    rgba(0,0,0,0.025) 20px
+  );
+}
+.sp-1 { background: #fffbeb; color: rgba(245,168,0,0.5); }
+.sp-2 { background: #eff6ff; color: rgba(43,127,255,0.5); }
+.sp-3 { background: #f0fdf4; color: rgba(13,176,103,0.5); }
+
+.screenshot-icon { font-size: 2.4rem; }
+
+.learn-card-body { padding: 24px; }
+.learn-step-num {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+.learn-card:nth-child(1) .learn-step-num { color: var(--yellow); }
+.learn-card:nth-child(2) .learn-step-num { color: var(--blue); }
+.learn-card:nth-child(3) .learn-step-num { color: var(--green); }
+
+.learn-card > img {
+  width: 100%;
+  display: block;
+  max-height: 220px;
+  object-fit: cover;
+}
+
+.learn-card-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.learn-card-desc {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  font-weight: 500;
+}
+
+/* ── ANALYTICS ── */
+#analytics {
+  background: var(--white);
+}
+
+.analytics-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 72px;
+  align-items: center;
+}
+@media(max-width: 900px) { .analytics-inner { grid-template-columns: 1fr; } }
+
+.analytics-points {
+  list-style: none;
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.analytics-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.analytics-point:hover {
+  border-color: rgba(43,127,255,0.3);
+  background: rgba(43,127,255,0.04);
+}
+.ap-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: rgba(43,127,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.ap-text strong { display: block; font-size: 0.95rem; font-weight: 700; margin-bottom: 3px; color: var(--text); }
+.ap-text span { font-size: 0.85rem; color: var(--muted); font-weight: 500; line-height: 1.5; }
+
+.analytics-visual {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+}
+.analytics-topbar {
+  padding: 14px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-r { background: #ff5f57; }
+.dot-y { background: #ffbd2e; }
+.dot-g { background: #28c840; }
+.topbar-title { font-size: 0.8rem; font-weight: 700; color: var(--muted); margin-left: 8px; }
+
+.dashboard-mock {
+  padding: 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.mock-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+}
+.mock-label { font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+.mock-val { font-family: var(--font-display); font-size: 1.8rem; }
+.mock-val.yellow { color: var(--yellow); }
+.mock-val.blue { color: var(--blue); }
+.mock-val.green { color: var(--green); }
+.mock-val.orange { color: var(--orange); }
+.mock-bar-wrap { margin-top: 10px; background: rgba(0,0,0,0.07); border-radius: 100px; height: 6px; overflow: hidden; }
+.mock-bar { height: 100%; border-radius: 100px; }
+
+.mock-chart-row { display: flex; align-items: flex-end; gap: 6px; height: 48px; margin-top: 8px; }
+.mock-bar-v {
+  flex: 1;
+  border-radius: 4px 4px 0 0;
+  background: rgba(43,127,255,0.25);
+  transition: background 0.2s;
+}
+.mock-bar-v:hover { background: var(--blue); }
+
+.mock-full { grid-column: 1 / -1; }
+.mock-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+.mock-table td {
+  font-size: 0.78rem;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-weight: 500;
+}
+.mock-table td:first-child { color: var(--text); font-weight: 600; }
+.mock-table tr:last-child td { border-bottom: none; }
+.pill-green { background: rgba(13,176,103,0.12); color: var(--green); padding: 2px 8px; border-radius: 100px; font-size: 0.7rem; font-weight: 700; }
+.pill-yellow { background: rgba(245,168,0,0.12); color: #b87b00; padding: 2px 8px; border-radius: 100px; font-size: 0.7rem; font-weight: 700; }
+
+/* ── BOTTOM CTA ── */
+#bottom-cta {
+  background: var(--surface);
+  text-align: center;
+}
+
+.cta-card {
+  max-width: 760px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, rgba(245,168,0,0.08) 0%, rgba(255,107,53,0.05) 100%);
+  border: 1.5px solid rgba(245,168,0,0.25);
+  border-radius: 28px;
+  padding: 72px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.cta-glow {
+  position: absolute;
+  width: 500px; height: 300px;
+  background: radial-gradient(ellipse, rgba(245,168,0,0.08) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.cta-card .section-heading { position: relative; }
+.cta-card .section-sub { margin: 0 auto 36px; position: relative; }
+
+/* (Second trailer removed) */
+
+/* ── FAQ ── */
+#faq {
+  background: var(--white);
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 56px;
+}
+@media(max-width: 700px) { .faq-grid { grid-template-columns: 1fr; } }
+
+.faq-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+.faq-item:hover { border-color: rgba(245,168,0,0.3); }
+.faq-item.open { border-color: rgba(245,168,0,0.35); background: rgba(245,168,0,0.03); }
+.faq-q {
+  font-weight: 700;
+  font-size: 0.97rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--text);
+}
+.faq-icon {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: rgba(245,168,0,0.1);
+  border: 1px solid rgba(245,168,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  color: var(--yellow);
+  transition: transform 0.25s;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+.faq-a {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  font-weight: 500;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, margin-top 0.25s;
+}
+.faq-item.open .faq-a { max-height: 200px; margin-top: 14px; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 48px 24px;
+}
+.footer-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--yellow);
+  letter-spacing: 0.5px;
+}
+.footer-tagline {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.social-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.social-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 100px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.social-btn:hover {
+  background: rgba(245,168,0,0.07);
+  border-color: rgba(245,168,0,0.35);
+  color: #b87b00;
+}
+.social-icon { font-size: 1.1rem; }
+
+.footer-copy {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* ── REVEAL ANIMATIONS ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ── HERO FLOAT ANIM ── */
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+.hero-badge { animation: heroFloat 4s ease-in-out infinite; }
+
+@media(max-width: 600px) {
+  section { padding: 72px 20px; }
+  .cta-card { padding: 48px 28px; }
+}
+
+
+</style>
+</head>
+<body>
+
+<!-- ═══ FLOATING MATH BACKGROUND ═══ -->
+<div class="math-bg" id="mathBg"></div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+
+  <div class="hero-content">
+    <span class="tag hero-badge">🎮 Now in Early Access</span>
+
+    <h1 class="hero-title display">
+      We make math<br><em>fun</em> for grade<br>1–8 students.
+    </h1>
+
+    <p class="hero-sub">
+      <strong>Don't Be Late!</strong> is a 3D platformer where the player answers math questions to progress through levels — turning practice into play.
+    </p>
+
+    <a href="#pilot" class="btn btn-yellow">
+      🏫 Request a School Pilot
+    </a>
+  </div>
+</section>
+
+<!-- ═══ TRAILER (local) ═══ -->
+<div id="trailer">
+  <div class="video-wrapper reveal">
+    <video id="localTrailer" width="100%" height="100%" playsinline preload="metadata" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:20px;object-fit:cover;background:#000;"loop>
+      <source src="Dont%20Be%20Late%20Trailer%201.mp4" type="video/mp4">
+      Your browser does not support the video tag. <a href="Dont%20Be%20Late%20Trailer%201.mp4">Download the video</a>.
+    </video>
+  </div>
+</div>
+
+<!-- ═══ HOW STUDENTS LEARN ═══ -->
+<section id="learn">
+  <div class="container">
+    <span class="section-eyebrow">How It Works</span>
+    <h2 class="section-heading display">How students learn with<br>Don't Be Late!</h2>
+    <p class="section-sub">Students build math skills through interactive gameplay that combines learning, practice, and progress.</p>
+
+    <div class="learn-grid">
+      <div class="learn-card reveal">
+        <img src="Learn.png" alt="Screenshot Learn" class="learn-card-img">
+        <div class="learn-card-body">
+          <span class="learn-step-num">Step 01 — Learn</span>
+          <div class="learn-card-title display">Learn</div>
+          <p class="learn-card-desc">Students encounter math problems naturally woven into gameplay. Each question is curriculum-aligned so they're always practicing exactly what they need.</p>
         </div>
+      </div>
 
-        <script>
-            function watchTrailer() {
-                window.open("https://www.youtube.com/watch?v=356zQvy9u_4", "_blank");
-            }
+      <div class="learn-card reveal reveal-delay-1">
+        <img src="Practice.png" alt="Screenshot Practice" class="learn-card-img">
+        <div class="learn-card-body">
+          <span class="learn-step-num">Step 02 — Practice</span>
+          <div class="learn-card-title display">Practice</div>
+          <p class="learn-card-desc">Repetition happens naturally through gameplay. Students answer dozens of problems per session without feeling like they're doing homework.</p>
+        </div>
+      </div>
 
-            function joinWaitlist(email) {
-                if (email) {
-                    alert("Thank you for joining the waitlist with email: " + email);
-                } else {
-                    alert("Please enter a valid email address.");
-                }
-            }
+      <div class="learn-card reveal reveal-delay-2">
+        <img src="Progress.png" alt="Screenshot Progress" class="learn-card-img">
+        <div class="learn-card-body">
+          <span class="learn-step-num">Step 03 — Progress</span>
+          <div class="learn-card-title display">Progress</div>
+          <p class="learn-card-desc">Every level completed is measurable growth. Students see their stats, unlock new levels, and build real fluency — one run at a time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            function validateEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            }
-        </script>
-    </body>
-    </html>
+<!-- ═══ ANALYTICS ═══ -->
+<section id="analytics">
+  <div class="container">
+    <div class="analytics-inner">
+      <div class="reveal">
+        <span class="section-eyebrow" style="color: var(--blue);">For Educators</span>
+        <h2 class="section-heading display">In-depth analytics for every classroom.</h2>
+        <p class="section-sub">Know exactly where each student stands. Track performance, spot gaps early, and see the impact of gameplay on math fluency — all in one place.</p>
+
+        <ul class="analytics-points">
+          <li class="analytics-point">
+            <div class="ap-icon">📊</div>
+            <div class="ap-text">
+              <strong>Student Performance Dashboard</strong>
+              <span>See accuracy rates, questions answered, and time spent per student across all levels.</span>
+            </div>
+          </li>
+          <li class="analytics-point">
+            <div class="ap-icon">🎯</div>
+            <div class="ap-text">
+              <strong>Skill Gap Detection</strong>
+              <span>Identify which topics students struggle with most so you can focus classroom time where it matters.</span>
+            </div>
+          </li>
+          <li class="analytics-point">
+            <div class="ap-icon">📈</div>
+            <div class="ap-text">
+              <strong>Progress Over Time</strong>
+              <span>Track improvement week-over-week and see which students are building fluency fastest.</span>
+            </div>
+          </li>
+          <li class="analytics-point">
+            <div class="ap-icon">📋</div>
+            <div class="ap-text">
+              <strong>Assign & Monitor</strong>
+              <span>Assign specific levels as homework and check who completed them — no paper required.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <div class="analytics-visual">
+          <div class="analytics-topbar">
+            <div class="dot dot-r"></div>
+            <div class="dot dot-y"></div>
+            <div class="dot dot-g"></div>
+            <span class="topbar-title">Teacher Dashboard · Class 4B</span>
+          </div>
+          <div class="dashboard-mock">
+            <div class="mock-card">
+              <span class="mock-label">Avg. Accuracy</span>
+              <span class="mock-val green">84%</span>
+              <div class="mock-bar-wrap"><div class="mock-bar" style="width:84%;background:var(--green);"></div></div>
+            </div>
+            <div class="mock-card">
+              <span class="mock-label">Levels Done</span>
+              <span class="mock-val yellow">247</span>
+              <div class="mock-bar-wrap"><div class="mock-bar" style="width:68%;background:var(--yellow);"></div></div>
+            </div>
+            <div class="mock-card">
+              <span class="mock-label">Weekly Activity</span>
+              <div class="mock-chart-row">
+                <div class="mock-bar-v" style="height:55%"></div>
+                <div class="mock-bar-v" style="height:80%"></div>
+                <div class="mock-bar-v" style="height:40%"></div>
+                <div class="mock-bar-v" style="height:95%"></div>
+                <div class="mock-bar-v" style="height:70%"></div>
+                <div class="mock-bar-v" style="height:60%"></div>
+                <div class="mock-bar-v" style="height:85%"></div>
+              </div>
+            </div>
+            <div class="mock-card">
+              <span class="mock-label">Students Active</span>
+              <span class="mock-val blue">22<span style="font-family:var(--font-body);font-size:1rem;color:var(--muted)">/24</span></span>
+              <div class="mock-bar-wrap"><div class="mock-bar" style="width:92%;background:var(--blue);"></div></div>
+            </div>
+            <div class="mock-card mock-full">
+              <span class="mock-label">Student Breakdown</span>
+              <table class="mock-table">
+                <tr><td>Amara J.</td><td>Level 7</td><td>91% acc.</td><td><span class="pill-green">On Track</span></td></tr>
+                <tr><td>Diego R.</td><td>Level 4</td><td>67% acc.</td><td><span class="pill-yellow">Needs Help</span></td></tr>
+                <tr><td>Lily T.</td><td>Level 9</td><td>96% acc.</td><td><span class="pill-green">Exceeding</span></td></tr>
+                <tr><td>Marcus W.</td><td>Level 5</td><td>78% acc.</td><td><span class="pill-green">On Track</span></td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BOTTOM CTA ═══ -->
+<section id="bottom-cta" style="padding:100px 24px;">
+  <div class="container">
+    <div class="cta-card reveal" id="pilot">
+      <div class="cta-glow"></div>
+      <span class="section-eyebrow" style="color:var(--yellow);text-align:center;display:block;position:relative;">Get Started</span>
+      <h2 class="section-heading display" style="text-align:center;">Bring Don't Be Late!<br>to your classroom.</h2>
+      <p class="section-sub" style="text-align:center;">Engage students with interactive gameplay that turns math practice into an adventure. Start with a free one-month pilot — no commitment needed.</p>
+      <div style="text-align:center;margin-top:36px;position:relative;">
+        <a href="#" class="btn btn-yellow">🏫 Request a School Pilot</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Second trailer section removed -->
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq">
+  <div class="container">
+    <span class="section-eyebrow">FAQ</span>
+    <h2 class="section-heading display">Common questions.</h2>
+
+    <div class="faq-grid">
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          What curriculum does Don't Be Late! use?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Don't Be Late! is fully aligned to the US Common Core curriculum. Every math question in the game maps directly to Common Core standards, so students are always practicing what they're learning in class.</div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-1" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          What devices does it run on?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Don't Be Late! runs on Chromebook, Windows, Mac, iOS, and Android — so it works across virtually any device your students already use at school or at home.</div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-2" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          Is it free for schools?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Yes! We offer a full one-month free pilot for schools — no credit card required. You'll get complete access to the game, the teacher dashboard, and student tracking during the pilot period.</div>
+      </div>
+
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          What grades does it currently cover?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Right now, Don't Be Late! has a complete question bank for Grade 4, fully aligned to the Common Core standards. We're actively working on adding more grade levels — Grades 1–8 are in our roadmap and coming soon.</div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-1" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          How does teacher account setup work?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Getting started is simple. After requesting a pilot, you'll receive a teacher account setup link. From there you can create your class, invite students, and start assigning levels within minutes. Our onboarding guide walks you through every step, and our team is available to help.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div style="text-align:center;">
+      <div class="footer-logo">Don't Be Late!</div>
+      <p class="footer-tagline">Redefining learning with gamification. · A Konita Games LLC product.</p>
+    </div>
+
+    <div class="social-row">
+      <a href="https://www.instagram.com/dontbelategame/" class="social-btn" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        Instagram
+      </a>
+      <a href="https://www.tiktok.com/@konita_yt" class="social-btn" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9.05a8.16 8.16 0 0 0 4.77 1.52V7.12a4.85 4.85 0 0 1-1-.43z"/></svg>
+        TikTok
+      </a>
+      <a href="https://www.linkedin.com/company/konita-games" class="social-btn" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://www.youtube.com/@Konita_YT" class="social-btn" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg>
+        YouTube
+      </a>
+    </div>
+
+    <p class="footer-copy">© 2026 Konita Games LLC · All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  // FAQ toggle
+  function toggleFaq(el) {
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  // Intersection observer reveals
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ── FLOATING MATH SYMBOLS ──
+  const symbols = [
+    '+', '−', '×', '÷', '=',
+    '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    '%', '²', '½', '¾', '√', '∞', '12', '36', '9+3'
+  ];
+  const colors = [
+    'rgba(245,168,0,0.14)',
+    'rgba(255,107,53,0.11)',
+    'rgba(13,176,103,0.11)',
+    'rgba(43,127,255,0.11)',
+    'rgba(232,25,139,0.09)',
+  ];
+
+  // Use the global math background container so symbols appear across the whole site
+  const container = document.getElementById('mathBg') || (() => {
+    const el = document.createElement('div');
+    el.className = 'math-bg';
+    document.body.prepend(el);
+    return el;
+  })();
+
+  const count = 40;
+  const floaters = [];
+
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    const size = 13 + Math.random() * 26;
+    // Keep symbols out of the center content column: only left/right gutters
+    const col = i % 10;
+    const row = Math.floor(i / 10);
+    const baseY = (row / 5) * 95 + Math.random() * 3;
+    // Alternate left/right to keep distribution balanced
+    const side = i % 2 === 0 ? 'left' : 'right';
+    const baseX =
+      side === 'left'
+        ? 2 + Math.random() * 12     // 2–14vw
+        : 86 + Math.random() * 12;   // 86–98vw
+    const x = baseX;
+    const y = baseY;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const sym = symbols[Math.floor(Math.random() * symbols.length)];
+    const speed = 0.3 + Math.random() * 0.5;
+    const ampY = 14 + Math.random() * 24;
+    const ampX = 8 + Math.random() * 16;
+    const phase = Math.random() * Math.PI * 2;
+    const rotSpeed = (Math.random() - 0.5) * 1.2;
+
+    el.textContent = sym;
+    el.style.cssText = `
+      position:absolute;
+      font-family:'Fredoka One',cursive;
+      font-size:${size}px;
+      color:${color};
+      left:${x}vw;
+      top:${y}vh;
+      user-select:none;
+      will-change:transform;
+      pointer-events:none;
+    `;
+    container.appendChild(el);
+    floaters.push({ el, baseX: x, baseY: y, ampX, ampY, speed, phase, rotSpeed, rot: Math.random() * 360, t: Math.random() * 1000 });
+  }
+
+  // Gentle drifting motion while staying anchored in page space
+  let lastTime = 0;
+  function animate(ts) {
+    const dt = Math.min(ts - lastTime, 50);
+    lastTime = ts;
+    floaters.forEach(f => {
+      f.t += dt * 0.001;
+      f.rot += dt * f.rotSpeed * 0.02;
+      const offsetY = Math.sin(f.t * f.speed + f.phase) * (f.ampY * 0.4);
+      const offsetX = Math.cos(f.t * f.speed * 0.7 + f.phase) * (f.ampX * 0.4);
+      f.el.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${f.rot}deg)`;
+    });
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+  // End of animations and floating symbols.
+  // Autoplay local video when visible and pause when not
+  (function(){
+    const wrapper = document.querySelector('#trailer .video-wrapper');
+    if (!wrapper) return;
+    const video = wrapper.querySelector('video');
+    if (!video) return;
+
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        try {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            video.muted = true;
+            video.play().catch(()=>{});
+          } else {
+            video.pause();
+          }
+        } catch (e) { console.warn('video observer error', e); }
+      });
+    }, { threshold: [0.5] });
+
+    obs.observe(wrapper);
+  })();
+</script>
+</body>
+</html>
