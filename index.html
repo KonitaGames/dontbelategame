@@ -783,17 +783,24 @@
     const overlay = document.getElementById('playOverlay');
     const frame = document.getElementById('vimeoFrame');
 
-    // Autoplay on both — on mobile the overlay just hides the video until tapped
-    frame.src = frame.src + '&autoplay=1';
-
     if (isMobile) {
       overlay.style.display = 'flex';
+    } else {
+      frame.src = frame.src + '&autoplay=1';
     }
 
     const player = new Vimeo.Player(frame);
 
+    player.ready().then(function() {
+      player.setVolume(0);
+    });
+
     function startVideo() {
-      overlay.style.display = 'none';
+      player.play().then(function() {
+        overlay.style.display = 'none';
+      }).catch(function(err) {
+        console.warn('play failed:', err);
+      });
     }
   </script>
   <!-- ═══ HOW STUDENTS LEARN ═══ -->
