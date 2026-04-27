@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.ico">
+<title>Request a School Pilot — Don't Be Late!</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f7f8fc;
+  --surface2: #eef0f7;
+  --yellow: #F5A800;
+  --orange: #FF6B35;
+  --green: #0DB067;
+  --blue: #2B7FFF;
+  --pink: #E8198B;
+  --white: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: rgba(0,0,0,0.08);
+  --font-display: 'Fredoka One', cursive;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ── FLOATING MATH BG ── */
+.math-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--yellow);
+  text-decoration: none;
+  letter-spacing: 0.3px;
+}
+
+.nav-logo .nav-icon,
+.nav-logo .nav-word-logo {
+  display: block;
+  height: 55px;
+  width: auto;
+}
+
+.nav-logo .nav-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.nav-logo .nav-word-logo {
+  max-height: 88px; /* 2x the original 42px */
+  width: auto;
+  object-fit: contain;
+}
+
+.nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1.5px solid var(--border);
+  transition: color 0.18s, border-color 0.18s, background 0.18s;
+}
+.nav-back:hover {
+  color: var(--text);
+  border-color: rgba(0,0,0,0.18);
+  background: var(--surface);
+}
+
+/* ── MAIN LAYOUT ── */
+main {
+  position: relative;
+  z-index: 1;
+  padding: 120px 24px 80px;
+  max-width: 1060px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.55fr;
+  gap: 64px;
+  align-items: start;
+}
+@media(max-width: 860px) {
+  main { grid-template-columns: 1fr; gap: 48px; padding-top: 100px; }
+}
+
+/* ── LEFT PANEL ── */
+.left-panel { position: sticky; top: 100px; }
+
+.page-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(245,168,0,0.12);
+  border: 1px solid rgba(245,168,0,0.3);
+  color: #c47f00;
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+  line-height: 1.06;
+  margin-bottom: 18px;
+  color: var(--text);
+}
+.page-title em {
+  font-style: normal;
+  color: var(--yellow);
+}
+
+.page-desc {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.72;
+  font-weight: 500;
+  margin-bottom: 36px;
+}
+
+/* ── PERKS LIST ── */
+.perks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+.perk {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.perk-icon {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.perk-icon.yellow { background: rgba(245,168,0,0.12); }
+.perk-icon.green  { background: rgba(13,176,103,0.12); }
+.perk-icon.blue   { background: rgba(43,127,255,0.12); }
+.perk-icon.orange { background: rgba(255,107,53,0.12); }
+
+.perk span { color: var(--muted); font-weight: 500; font-size: 0.84rem; display: block; margin-top: 1px; }
+
+/* ── TRUST BADGES ── */
+.trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+/* ── FORM CARD ── */
+.form-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  padding: 44px 40px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--yellow), var(--orange), var(--yellow));
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@media(max-width: 600px) {
+  .form-card { padding: 32px 24px; }
+}
+
+.form-title {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.form-subtitle {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+/* ── FORM ELEMENTS ── */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media(max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+
+label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 7px;
+  letter-spacing: 0.01em;
+}
+label .req {
+  color: var(--yellow);
+  margin-left: 2px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+input::placeholder, textarea::placeholder {
+  color: #b0bac8;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(245,168,0,0.12);
+  background: var(--white);
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 92px;
+  line-height: 1.6;
+}
+
+/* ── CHECKBOX GROUP ── */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 0;
+  position: relative;
+}
+.checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  cursor: pointer;
+}
+.checkbox-custom {
+  width: 22px;
+  height: 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.checkbox-custom::after {
+  content: '';
+  width: 5px;
+  height: 9px;
+  border: solid var(--yellow);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+  opacity: 1;
+}
+
+/* ── SECTION DIVIDER ── */
+.form-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 28px 0;
+}
+.form-section-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.form-section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── GRADE CHECKBOXES ── */
+.grade-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+@media(max-width: 500px) { .grade-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.grade-chip {
+  position: relative;
+}
+.grade-chip input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0; height: 0;
+}
+.grade-chip label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 6px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.18s;
+  margin-bottom: 0;
+  text-align: center;
+}
+.grade-chip input:checked + label {
+  border-color: var(--yellow);
+  background: rgba(245,168,0,0.1);
+  color: #b87b00;
+  box-shadow: 0 0 0 3px rgba(245,168,0,0.1);
+}
+
+/* ── SUBMIT BTN ── */
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--yellow);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+  letter-spacing: 0.01em;
+  margin-top: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(245,168,0,0.4);
+  background: #e89c00;
+}
+.submit-btn:active { transform: translateY(0); }
+.submit-btn .btn-shimmer {
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: btnShimmer 2.5s ease-in-out infinite;
+}
+@keyframes btnShimmer {
+  0%   { left: -100%; }
+  60%, 100% { left: 160%; }
+}
+
+.form-footnote {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 500;
+  margin-top: 14px;
+  line-height: 1.6;
+}
+
+/* ── SUCCESS STATE ── */
+.success-state {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px 0 8px;
+  gap: 16px;
+  animation: fadeUp 0.5s ease forwards;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+.success-icon {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: rgba(13,176,103,0.12);
+  border: 2px solid rgba(13,176,103,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto;
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s both;
+}
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.success-title {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  color: var(--text);
+}
+.success-msg {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  font-weight: 500;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+.rd1 { transition-delay: 0.1s; }
+.rd2 { transition-delay: 0.2s; }
+.rd3 { transition-delay: 0.3s; }
+
+/* ── FOOTER ── */
+footer {
+  position: relative; z-index: 1;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 32px 24px;
+  text-align: center;
+}
+.footer-inner {
+  max-width: 1060px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--yellow);
+}
+.footer-copy {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+/*Add fonts*/
+
+    @font-face {
+    font-family: 'Fredoka One';
+    src: url('Fonts/FredokaOne-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-display: block;
+  }
+
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('Fonts/PlusJakartaSans-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-display: block;
+  }
+
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('Fonts/PlusJakartaSans-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-display: block;
+  }
+
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('Fonts/PlusJakartaSans-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-display: block;
+  }
+
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('Fonts/PlusJakartaSans-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-display: block;
+  }
+
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('Fonts/PlusJakartaSans-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-display: block;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- FLOATING MATH BG -->
+<div class="math-bg" id="mathBg"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="Logo.png" alt="Word logo" class="nav-word-logo">
+  </a>
+  <a href="index.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to site
+  </a>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="page-tag reveal">🏫 Free for Schools</div>
+
+    <h1 class="page-title reveal rd1">
+      Start your<br>free <em>one-month</em><br>pilot today.
+    </h1>
+
+    <p class="page-desc reveal rd2">
+      Get full access to Don't Be Late! for your entire class — including the teacher dashboard, student progress tracking, and curriculum-aligned question banks. No credit card. No commitment.
+    </p>
+
+    <ul class="perks reveal rd3">
+      <li class="perk">
+        <div class="perk-icon yellow">🎮</div>
+        <div>
+          Full game access for all students
+          <span>Complete 3D platformer with curriculum-aligned math questions.</span>
+        </div>
+      </li>
+      <li class="perk">
+        <div class="perk-icon green">📊</div>
+        <div>
+          Teacher dashboard included
+          <span>Track every student's accuracy, progress, and skill gaps in real time.</span>
+        </div>
+      </li>
+      <li class="perk">
+        <div class="perk-icon blue">📚</div>
+        <div>
+          Common Core aligned
+          <span>Grade 4 question bank available now. Grades 1–8 on the roadmap.</span>
+        </div>
+      </li>
+      <li class="perk">
+        <div class="perk-icon orange">⚡</div>
+        <div>
+          Set up in minutes
+          <span>Onboarding guide + our team on hand to help you get started.</span>
+        </div>
+      </li>
+    </ul>
+
+    <div class="trust-row reveal">
+      <span class="trust-badge">✅ No credit card</span>
+      <span class="trust-badge">🔒 Student data safe</span>
+      <span class="trust-badge">⏱️ 30-day free access</span>
+      <span class="trust-badge">🖥️ Works on Chromebook</span>
+    </div>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="form-card reveal rd1">
+
+    <!-- FORM -->
+    <div id="formView">
+      <h2 class="form-title">Request Your Pilot</h2>
+      <p class="form-subtitle">Fill out the form below and we'll be in touch within 1 business day to get you set up.</p>
+
+      <form id="pilotForm" action="https://formspree.io/f/xlgplwoo" method="POST" novalidate>
+
+        <!-- CONTACT INFO -->
+        <div class="form-section-label">Your Info</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name <span class="req">*</span></label>
+            <input type="text" name="firstName" placeholder="Maria" required autocomplete="given-name">
+          </div>
+          <div class="form-group">
+            <label>Last Name <span class="req">*</span></label>
+            <input type="text" name="lastName" placeholder="Johnson" required autocomplete="family-name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>School Email <span class="req">*</span></label>
+          <input type="email" name="email" placeholder="m.johnson@lincolnelementary.edu" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label>Your Role <span class="req">*</span></label>
+          <select name="role" required>
+            <option value="" disabled selected>Select your role…</option>
+            <option>Classroom Teacher</option>
+            <option>Math Specialist / Coach</option>
+            <option>Principal / Assistant Principal</option>
+            <option>Curriculum Director</option>
+            <option>IT / Technology Coordinator</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <!-- SCHOOL INFO -->
+        <div class="form-section-label">School Info</div>
+
+        <div class="form-group">
+          <label>School Name <span class="req">*</span></label>
+          <input type="text" name="schoolName" placeholder="Lincoln Elementary School" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>City <span class="req">*</span></label>
+            <input type="text" name="city" placeholder="Columbus" required autocomplete="address-level2">
+          </div>
+          <div class="form-group">
+            <label>State <span class="req">*</span></label>
+            <select name="state" required>
+              <option value="" disabled selected>State…</option>
+              <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option><option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option><option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option><option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option><option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option><option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option><option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option><option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option><option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option><option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option><option>DC</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Number of Students <span class="req">*</span></label>
+            <select name="studentCount" required>
+              <option value="" disabled selected>Select range…</option>
+              <option>1–25</option>
+              <option>26–50</option>
+              <option>51–100</option>
+              <option>101–250</option>
+              <option>250+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Number of Classrooms</label>
+            <input type="number" name="classrooms" placeholder="e.g. 3" min="1" max="500">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Primary Device Students Use</label>
+          <select name="device">
+            <option value="" disabled selected>Select device…</option>
+            <option>Chromebook</option>
+            <option>Windows PC / Laptop</option>
+            <option>Mac</option>
+            <option>iPad / iOS</option>
+            <option>Android Tablet</option>
+            <option>Mix of devices</option>
+          </select>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <!-- GRADES -->
+        <div class="form-section-label">Grade Levels</div>
+        <p style="font-size:0.82rem;color:var(--muted);font-weight:500;margin-bottom:14px;">Which grades would use Don't Be Late! during the pilot?</p>
+
+        <div class="grade-grid">
+          <div class="grade-chip"><input type="checkbox" id="g1" name="grades" value="1"><label for="g1">Grade 1</label></div>
+          <div class="grade-chip"><input type="checkbox" id="g2" name="grades" value="2"><label for="g2">Grade 2</label></div>
+          <div class="grade-chip"><input type="checkbox" id="g3" name="grades" value="3"><label for="g3">Grade 3</label></div>
+          <div class="grade-chip"><input type="checkbox" id="g4" name="grades" value="4"><label for="g4">Grade 4 ⭐</label></div>
+          <div class="grade-chip"><input type="checkbox" id="g5" name="grades" value="5"><label for="g5">Grade 5</label></div>
+          <div class="grade-chip"><input type="checkbox" id="g6" name="grades" value="6"><label for="g6">Grade 6</label></div>
+          <div class="grade-chip"><input type="checkbox" id="g7" name="grades" value="7"><label for="g7">Grade 7</label></div>
+          <div class="grade-chip"><input type="checkbox" id="g8" name="grades" value="8"><label for="g8">Grade 8</label></div>
+        </div>
+
+        <p style="font-size:0.76rem;color:rgba(43,127,255,0.8);font-weight:600;margin-top:10px;">⭐ Grade 4 is fully available now. Other grades coming soon.</p>
+
+        <div class="form-divider"></div>
+
+        <!-- ADDITIONAL -->
+        <div class="form-section-label">Anything Else?</div>
+
+        <div class="form-group">
+          <label>How did you hear about Don't Be Late!?</label>
+          <select name="referral">
+            <option value="" disabled selected>Select one…</option>
+            <option>From another teacher or colleague</option>
+            <option>Social media (Instagram / TikTok)</option>
+            <option>LinkedIn</option>
+            <option>Google / Web search</option>
+            <option>Conference or event</option>
+            <option>My principal recommended it</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Anything you'd like us to know?</label>
+          <textarea name="message" placeholder="e.g. Our students have been struggling with multiplication this semester and we're looking for something to make practice more engaging…"></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="checkbox-label">
+            <input type="checkbox" id="consent" name="consent" required>
+            <span class="checkbox-custom"></span>
+            I agree to be contacted by the Don't Be Late! team about setting up my pilot. No spam — ever.
+          </label>
+        </div>
+
+        <!-- SUBMIT -->
+        <button type="submit" class="submit-btn">
+          <span class="btn-shimmer"></span>
+          🏫 Submit Pilot Request
+        </button>
+
+        <p class="form-footnote">We'll respond within 1 business day. <br/>Questions? Email <a href="mailto:support@dontbelategame.com" style="color:var(--yellow);font-weight:700;text-decoration:none;">support@dontbelategame.com</a></p>
+
+      </form>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-state" id="successView">
+      <div class="success-icon">🎉</div>
+      <h3 class="success-title">You're on the list!</h3>
+      <p class="success-msg">
+        Thanks for requesting a pilot. We'll be in touch within <strong>1 business day</strong> with everything you need to get started.
+      </p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+        <span class="trust-badge">📬 Check your inbox soon</span>
+        <span class="trust-badge">🎮 Get ready to play</span>
+      </div>
+      <a href="index.html" style="margin-top:24px;display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:100px;background:var(--yellow);color:#fff;font-weight:800;font-size:0.92rem;text-decoration:none;transition:transform 0.18s,box-shadow 0.18s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 36px rgba(245,168,0,0.38)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        ← Back to Homepage
+      </a>
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <img src="Logo.png" alt="Don't Be Late!" style="height:48px;width:auto;">
+    <p class="footer-copy">© 2026 Konita Games LLC · All rights reserved. · A Konita Games LLC product.</p>
+  </div>
+</footer>
+
+<script>
+// ── REVEAL OBSERVER ──
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// ── FORM SUBMIT ──
+document.getElementById('pilotForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  // Basic validation highlights
+  let valid = true;
+  this.querySelectorAll('[required]').forEach(el => {
+    if (!el.value.trim() || (el.type === 'checkbox' && !el.checked)) {
+      el.style.borderColor = 'rgba(255,107,53,0.7)';
+      el.style.boxShadow = '0 0 0 3px rgba(255,107,53,0.12)';
+      valid = false;
+      setTimeout(() => { el.style.borderColor = ''; el.style.boxShadow = ''; }, 2500);
+    }
+  });
+
+  if (!valid) return;
+
+  // Animate button
+  const btn = this.querySelector('.submit-btn');
+  btn.innerHTML = '<span style="display:inline-block;animation:spin 0.6s linear infinite">⏳</span> Submitting…';
+  btn.disabled = true;
+
+  // Send to Formspree endpoint
+  const formData = new FormData(this);
+  fetch(this.action, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'Accept': 'application/json'
+    }
+  })
+    .then(response => {
+      if (!response.ok) throw new Error('Network response was not ok');
+      return response.json();
+    })
+    .then(() => {
+      document.getElementById('formView').style.display = 'none';
+      const s = document.getElementById('successView');
+      s.style.display = 'flex';
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.innerHTML = '🏫 Submit Pilot Request';
+      alert('There was a problem submitting the form. Please try again or email support@dontbelategame.com');
+    });
+});
+
+// spin keyframe
+const style = document.createElement('style');
+style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+document.head.appendChild(style);
+
+// ── FLOATING MATH SYMBOLS ──
+const symbols = ['+','−','×','÷','=','1','2','3','4','5','6','7','8','9','%','²','½','√','∞','12','36'];
+const colors  = ['rgba(245,168,0,0.12)','rgba(255,107,53,0.1)','rgba(13,176,103,0.1)','rgba(43,127,255,0.1)'];
+const container = document.getElementById('mathBg');
+const floaters = [];
+
+for (let i = 0; i < 36; i++) {
+  const el = document.createElement('span');
+  const size = 12 + Math.random() * 22;
+  const side = i % 2 === 0 ? 'left' : 'right';
+  const x = side === 'left' ? 1 + Math.random() * 10 : 88 + Math.random() * 10;
+  const y = (i / 36) * 100 + Math.random() * 2;
+  el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+  el.style.cssText = `position:absolute;font-family:'Fredoka One',cursive;font-size:${size}px;color:${colors[i%colors.length]};left:${x}vw;top:${y}vh;pointer-events:none;user-select:none;will-change:transform;`;
+  container.appendChild(el);
+  floaters.push({ el, ampX: 8 + Math.random() * 14, ampY: 12 + Math.random() * 20, speed: 0.3 + Math.random() * 0.5, phase: Math.random() * Math.PI * 2, rot: Math.random() * 360, rotSpeed: (Math.random() - 0.5) * 1.2, t: Math.random() * 100 });
+}
+
+let last = 0;
+(function tick(ts) {
+  const dt = Math.min(ts - last, 50); last = ts;
+  floaters.forEach(f => {
+    f.t += dt * 0.001; f.rot += dt * f.rotSpeed * 0.02;
+    const ox = Math.cos(f.t * f.speed * 0.7 + f.phase) * f.ampX * 0.35;
+    const oy = Math.sin(f.t * f.speed + f.phase) * f.ampY * 0.35;
+    f.el.style.transform = `translate(${ox}px,${oy}px) rotate(${f.rot}deg)`;
+  });
+  requestAnimationFrame(tick);
+})(0);
+</script>
+</body>
+</html>
