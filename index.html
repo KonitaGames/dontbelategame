@@ -772,22 +772,30 @@
     </div>
   </div>
   <script src="https://player.vimeo.com/api/player.js"></script>
-
   <script>
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const overlay = document.getElementById('playOverlay');
     const frame = document.getElementById('vimeoFrame');
 
+    // Initialize player once
+    let player;
+    window.addEventListener('load', function() {
+      player = new Vimeo.Player(frame);
+    });
+
     if (!isMobile) {
-      // Desktop: autoplay, hide overlay
       frame.src = frame.src + '&autoplay=1';
       overlay.style.display = 'none';
     }
 
     function startVideo() {
-      const player = new Vimeo.Player(frame);
-      player.play();
-      overlay.style.display = 'none';
+      if (player) {
+        player.play().then(function() {
+          overlay.style.display = 'none';
+        }).catch(function(err) {
+          console.warn('Vimeo play failed:', err);
+        });
+      }
     }
   </script>
   <!-- ═══ HOW STUDENTS LEARN ═══ -->
