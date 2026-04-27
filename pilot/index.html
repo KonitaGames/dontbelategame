@@ -873,7 +873,7 @@ document.getElementById('pilotForm').addEventListener('submit', function(e) {
   // Basic validation highlights
   let valid = true;
   this.querySelectorAll('[required]').forEach(el => {
-    if (!el.value.trim() || (el.type === 'checkbox' && !el.checked)) {
+    if ((el.type === 'checkbox' && !el.checked) || (el.type !== 'checkbox' && !el.value.trim())) {
       el.style.borderColor = 'rgba(255,107,53,0.7)';
       el.style.boxShadow = '0 0 0 3px rgba(255,107,53,0.12)';
       valid = false;
