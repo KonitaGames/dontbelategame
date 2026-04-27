@@ -1084,28 +1084,6 @@
     }
     requestAnimationFrame(animate);
     // End of animations and floating symbols.
-    // Autoplay local video when visible and pause when not
-    (function(){
-      const wrapper = document.querySelector('#trailer .video-wrapper');
-      if (!wrapper) return;
-      const video = wrapper.querySelector('video');
-      if (!video) return;
-
-      const obs = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          try {
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-              video.muted = true;
-              video.play().catch(()=>{});
-            } else {
-              video.pause();
-            }
-          } catch (e) { console.warn('video observer error', e); }
-        });
-      }, { threshold: [0.5] });
-
-      obs.observe(wrapper);
-    })();
   </script>
   </body>
   </html>
