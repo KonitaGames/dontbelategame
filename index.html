@@ -231,6 +231,8 @@
   }
 
   /* ── VIDEO SECTION ── */
+  #playOverlay { display: none; }
+  
   #trailer {
     padding: 40px 24px 100px;
     display: flex;
@@ -741,22 +743,27 @@
   <!-- ═══ TRAILER ═══ -->
   <div id="trailer">
     <div class="video-wrapper reveal" id="videoWrapper">
-      <!-- Play button overlay (mobile only) -->
       <div id="playOverlay" style="
         position:absolute;top:0;left:0;width:100%;height:100%;
-        display:flex;align-items:center;justify-content:center;
-        z-index:10;cursor:pointer;
+        display:flex;flex-direction:column;align-items:center;justify-content:center;
+        gap:16px;z-index:10;cursor:pointer;
+        background:linear-gradient(135deg,rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.15) 100%);
+        backdrop-filter:blur(2px);
       " onclick="startVideo()">
         <div style="
-          width:80px;height:80px;border-radius:50%;
+          width:72px;height:72px;border-radius:50%;
           background:var(--yellow);
           display:flex;align-items:center;justify-content:center;
-          box-shadow:0 0 40px rgba(245,168,0,0.5);
+          box-shadow:0 0 0 12px rgba(245,168,0,0.2), 0 8px 32px rgba(245,168,0,0.5);
           transition:transform 0.2s;
-        ">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="white" style="margin-left:4px;">
+        " onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="white" style="margin-left:4px;">
             <polygon points="5,3 19,12 5,21"/>
           </svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1rem;letter-spacing:0.02em;">Watch the Demo</div>
+          <div style="color:rgba(255,255,255,0.7);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.78rem;font-weight:500;margin-top:4px;">2 min gameplay trailer</div>
         </div>
       </div>
 
@@ -777,25 +784,24 @@
     const overlay = document.getElementById('playOverlay');
     const frame = document.getElementById('vimeoFrame');
 
-    // Initialize player once
-    let player;
-    window.addEventListener('load', function() {
-      player = new Vimeo.Player(frame);
-    });
-
-    if (!isMobile) {
+    if (isMobile) {
+      overlay.style.display = 'flex';
+    } else {
       frame.src = frame.src + '&autoplay=1';
-      overlay.style.display = 'none';
     }
 
+    const player = new Vimeo.Player(frame);
+
+    player.ready().then(function() {
+      player.setVolume(0);
+    });
+
     function startVideo() {
-      if (player) {
-        player.play().then(function() {
-          overlay.style.display = 'none';
-        }).catch(function(err) {
-          console.warn('Vimeo play failed:', err);
-        });
-      }
+      player.play().then(function() {
+        overlay.style.display = 'none';
+      }).catch(function(err) {
+        console.warn('play failed:', err);
+      });
     }
   </script>
   <!-- ═══ HOW STUDENTS LEARN ═══ -->
