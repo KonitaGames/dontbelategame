@@ -740,17 +740,56 @@
 
   <!-- ═══ TRAILER ═══ -->
   <div id="trailer">
-    <div class="video-wrapper reveal">
+    <div class="video-wrapper reveal" id="videoWrapper">
+      <!-- Play button overlay (mobile only) -->
+      <div id="playOverlay" style="
+        position:absolute;top:0;left:0;width:100%;height:100%;
+        display:flex;align-items:center;justify-content:center;
+        z-index:10;cursor:pointer;
+      " onclick="startVideo()">
+        <div style="
+          width:80px;height:80px;border-radius:50%;
+          background:var(--yellow);
+          display:flex;align-items:center;justify-content:center;
+          box-shadow:0 0 40px rgba(245,168,0,0.5);
+          transition:transform 0.2s;
+        ">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white" style="margin-left:4px;">
+            <polygon points="5,3 19,12 5,21"/>
+          </svg>
+        </div>
+      </div>
+
       <iframe
-        src="https://player.vimeo.com/video/1186782429?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&controls=0&playsinline=1"
+        id="vimeoFrame"
+        src="https://player.vimeo.com/video/1186782429?badge=0&autopause=0&player_id=0&app_id=58479&muted=1&loop=1&controls=0&playsinline=1"
         frameborder="0"
         allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+        allowfullscreen
         style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
         title="Dont Be Late Trailer 1">
       </iframe>
     </div>
   </div>
   <script src="https://player.vimeo.com/api/player.js"></script>
+
+  <script>
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const overlay = document.getElementById('playOverlay');
+    const frame = document.getElementById('vimeoFrame');
+
+    if (!isMobile) {
+      // Desktop: autoplay, hide overlay
+      frame.src = frame.src + '&autoplay=1';
+      overlay.style.display = 'none';
+    }
+
+    function startVideo() {
+      const player = new Vimeo.Player(frame);
+      player.play();
+      overlay.style.display = 'none';
+    }
+  </script>
   <!-- ═══ HOW STUDENTS LEARN ═══ -->
   <section id="learn">
     <div class="container">
