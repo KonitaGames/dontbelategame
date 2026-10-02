@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.ico">
+<title>Terms of Use — Don't Be Late!</title>
+<style>
+  body { opacity: 0; transition: opacity 0.15s ease; }
+  body.ready { opacity: 1; }
+</style>
+<script>
+  document.fonts.ready.then(function() {
+    document.body.classList.add('ready');
+  });
+</script>
+<style>
+  @font-face {
+    font-family: 'Fredoka One';
+    src: url('Fonts/FredokaOne-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-display: block;
+  }
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('Fonts/PlusJakartaSans-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-display: block;
+  }
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('Fonts/PlusJakartaSans-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-display: block;
+  }
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('Fonts/PlusJakartaSans-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-display: block;
+  }
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('Fonts/PlusJakartaSans-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-display: block;
+  }
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('Fonts/PlusJakartaSans-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-display: block;
+  }
+
+  :root {
+    --bg: #ffffff;
+    --surface: #f7f8fc;
+    --surface2: #eef0f7;
+    --yellow: #F5A800;
+    --orange: #FF6B35;
+    --green: #0DB067;
+    --blue: #2B7FFF;
+    --pink: #E8198B;
+    --white: #ffffff;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: rgba(0,0,0,0.08);
+    --font-display: 'Fredoka One', cursive;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .display { font-family: var(--font-display); }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .nav-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    transition: color 0.18s, border-color 0.18s, background 0.18s;
+  }
+  .nav-back:hover {
+    color: var(--text);
+    border-color: rgba(0,0,0,0.18);
+    background: var(--surface);
+  }
+
+  /* ── POLICY CONTENT ── */
+  .policy-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 150px 24px 100px;
+  }
+  .policy-header { margin-bottom: 36px; }
+  .policy-header h1 {
+    font-size: 3.6rem;
+    line-height: 1.1;
+    margin-bottom: 18px;
+  }
+  .policy-header .company {
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .policy-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.8;
+  }
+  .policy-meta strong { color: var(--text); }
+
+  .toc {
+    padding: 0;
+    margin-bottom: 44px;
+  }
+  .toc-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.05rem;
+    margin-bottom: 14px;
+  }
+  .toc ol {
+    list-style: decimal;
+    margin: 0;
+    padding-left: 22px;
+    columns: 1;
+  }
+  .toc li {
+    margin-bottom: 9px;
+    font-size: 0.92rem;
+  }
+  .toc a {
+    color: var(--blue);
+    text-decoration: underline;
+    font-weight: 600;
+  }
+  .toc a:hover { color: #1b5fd6; }
+
+  article p {
+    font-size: 0.98rem;
+    line-height: 1.75;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+  article h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.25rem;
+    margin: 42px 0 14px;
+    color: var(--text);
+    border-bottom: 2px solid var(--surface2);
+    padding-bottom: 10px;
+    scroll-margin-top: 110px;
+  }
+  article h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    margin: 22px 0 8px;
+    color: var(--text);
+  }
+  article ul {
+    margin: 0 0 16px 22px;
+  }
+  article li {
+    font-size: 0.98rem;
+    line-height: 1.75;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+  article a {
+    color: var(--blue);
+    text-decoration: underline;
+    font-weight: 600;
+  }
+  article strong { font-weight: 800; }
+  article .caps { font-size: 0.92rem; }
+
+  @media (max-width: 600px) {
+    .policy-wrap { padding: 110px 20px 70px; }
+    .policy-header h1 { font-size: 2.4rem; }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 40px 24px 32px;
+    text-align: center;
+  }
+  .footer-inner {
+    max-width: 1060px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .footer-tagline {
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 10px;
+  }
+  .social-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  .social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 16px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.18s, border-color 0.18s, background 0.18s;
+  }
+  .social-btn:hover {
+    color: var(--text);
+    border-color: rgba(0,0,0,0.18);
+    background: var(--white);
+  }
+  .footer-links {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .footer-links a {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .footer-links a:hover { color: var(--text); }
+  .footer-copy {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+  <nav>
+    <a href="/">
+      <img src="Logo.png" alt="Don't Be Late!" style="height:55px;width:auto;">
+    </a>
+    <a href="/" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back to site
+    </a>
+  </nav>
+
+  <div class="policy-wrap">
+    <div class="policy-header">
+      <h1 class="display">Terms of Use</h1>
+      <p class="company">Konita Games LLC</p>
+      <p class="policy-meta">
+        <strong>Version:</strong> v1.0 &nbsp;&nbsp; <strong>Effective Date:</strong> September 26, 2026 &nbsp;&nbsp; <strong>Last Updated:</strong> September 26, 2026
+      </p>
+    </div>
+
+    <div class="toc" aria-label="Table of contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#section-1">Who These Terms Apply To</a></li>
+        <li><a href="#section-2">Eligibility, Age, and Consent</a></li>
+        <li><a href="#section-3">Accounts</a></li>
+        <li><a href="#section-4">The Service</a></li>
+        <li><a href="#section-5">Educational Purpose and No Guarantee</a></li>
+        <li><a href="#section-6">Responsibilities of Teachers, Schools, and Programs</a></li>
+        <li><a href="#section-7">Parents and Guardians</a></li>
+        <li><a href="#section-8">Students</a></li>
+        <li><a href="#section-9">Acceptable Use</a></li>
+        <li><a href="#section-10">Coins, Characters, and Rewards</a></li>
+        <li><a href="#section-11">Privacy and Your Information</a></li>
+        <li><a href="#section-12">Schools, Programs, and Student Records</a></li>
+        <li><a href="#section-13">Data Requests, Retention, and Deletion</a></li>
+        <li><a href="#section-14">Messages and Feedback You Send Us</a></li>
+        <li><a href="#section-15">Third-Party Services</a></li>
+        <li><a href="#section-16">Our Intellectual Property</a></li>
+        <li><a href="#section-17">Suspension and Termination</a></li>
+        <li><a href="#section-18">Disclaimers</a></li>
+        <li><a href="#section-19">Limitation of Liability</a></li>
+        <li><a href="#section-20">Indemnification</a></li>
+        <li><a href="#section-21">Disputes</a></li>
+        <li><a href="#section-22">Governing Law</a></li>
+        <li><a href="#section-23">Changes to the Service and to These Terms</a></li>
+        <li><a href="#section-24">Electronic Communications</a></li>
+        <li><a href="#section-25">General Terms</a></li>
+        <li><a href="#section-26">How to Contact Us</a></li>
+      </ol>
+    </div>
+
+    <article>
+      <p>These Terms of Use (&ldquo;Terms&rdquo;) are a binding agreement between you and Konita Games LLC, a Kentucky limited liability company (&ldquo;Konita Games,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;). They govern your use of Don't Be Late!, our website (dontbelategame.com), and related products and services (together, the &ldquo;Service&rdquo;).</p>
+      <p>Please read these Terms carefully. By creating an account, tapping to accept, or otherwise using the Service, you agree to these Terms and to our <a href="/privacy">Privacy Policy</a>, which is part of them. If you do not agree, do not use the Service.</p>
+
+      <h2 id="section-1">1. Who These Terms Apply To</h2>
+      <p>The Service is used by different people in different ways. In these Terms:</p>
+      <ul>
+        <li>&ldquo;Teacher&rdquo; means an adult educator who creates a teacher account and manages one or more classes.</li>
+        <li>&ldquo;School or Program&rdquo; means a school, district, after-school program, tutoring center, club, or similar organization that uses the Service with its students.</li>
+        <li>&ldquo;Parent&rdquo; means a parent or legal guardian of a Student, who may choose to manage their child's account.</li>
+        <li>&ldquo;Student&rdquo; means a child who plays the game independently or through a class or program.</li>
+        <li>&ldquo;You&rdquo; means whichever of these applies to you. Some sections apply only to certain roles and say so.</li>
+      </ul>
+
+      <h2 id="section-2">2. Eligibility, Age, and Consent</h2>
+      <h3>Adults.</h3>
+      <p>Teachers, program staff, and Parents must be at least 18 years old, or the age of majority where they live.</p>
+      <h3>Students.</h3>
+      <p>Students may start creating an account themselves and may use the Service independently or join a class or program. Our Privacy Policy explains what information we collect from Students and how we protect it.</p>
+      <h3>Schools and Programs.</h3>
+      <p>A School or Program that gives its students access confirms that it has the authority to do so, including the authority to consent on behalf of Parents for educational use of the Service where the law allows it, and that it has obtained any consent or given any notice its own policies and applicable law require. School or Program consent applies only to the educational use it authorizes; it does not authorize a Student's separate, independent use of the Service.</p>
+      <h3>Parents.</h3>
+      <p>Parents do not need an account unless they choose to create one to manage their child's account. By creating or managing an account for your child, or by giving consent for your child's independent use of the Service, you agree to these Terms on your child's behalf. You may ask us or your child's Teacher or Program, as applicable, to review, export, or delete your child's information (see Section 13).</p>
+      <h3>Authority.</h3>
+      <p>If you accept these Terms on behalf of a School or Program, you confirm that you have the authority to bind it. If you do not have that authority, do not accept.</p>
+      <h3>Sanctions.</h3>
+      <p>You may not use the Service if you are barred from doing so under U.S. sanctions or export laws.</p>
+
+      <h2 id="section-3">3. Accounts</h2>
+      <ul>
+        <li>Give accurate information and keep it up to date.</li>
+        <li>Students should provide a first name and last initial. We do not collect Students' full last names.</li>
+        <li>Keep your login private. You are responsible for activity on your account. Tell us promptly at <a href="mailto:support@dontbelategame.com">support@dontbelategame.com</a> if you think someone else has used it.</li>
+        <li>Accounts are personal. Do not share, sell, or transfer an account.</li>
+        <li>Class codes are for the intended class only. Teachers should share them only with their own students.</li>
+      </ul>
+
+      <h2 id="section-4">4. The Service</h2>
+      <p>We grant you a limited, non-exclusive, non-transferable, revocable license to use the Service for personal, non-commercial, educational purposes, subject to these Terms.</p>
+      <p>The Service currently includes a math adventure game, a curriculum of levels organized by chapter and topic, star ratings, coins, achievements, daily login rewards, optional read-aloud, and a Class Analytics dashboard for Teachers. Features and content may vary by grade and platform, and may change over time.</p>
+      <p>We may offer beta or experimental features. They are provided as-is and may be changed or removed at any time.</p>
+      <p>We do not guarantee that the Service will always be available or error-free. We may perform maintenance, add limits, or change or stop features.</p>
+
+      <h3>Important Health Warning About Photosensitive Seizures</h3>
+      <p>A very small percentage of people may experience a seizure when exposed to certain visual images, including flashing lights or patterns that may appear in video games. Even users with no history of seizures or epilepsy may have an undiagnosed condition. If you or your students experience symptoms such as lightheadedness, altered vision, eye or face twitching, jerking or shaking of arms or legs, disorientation, confusion, or momentary loss of awareness, stop playing immediately and consult a doctor. Parents and Teachers should monitor children for these symptoms.</p>
+
+      <h2 id="section-5">5. Educational Purpose and No Guarantee</h2>
+      <p>The Service is a supplemental learning tool. It is not a replacement for classroom instruction, a formal assessment, or a diagnosis of any learning need.</p>
+      <p>Accuracy percentages, star ratings, &ldquo;needs help&rdquo; flags, and other analytics are indicators, not grades or evaluations. Teachers and Programs should use their own professional judgment. We do not guarantee any particular educational outcome, and the Service does not make placement, grading, or disciplinary decisions about any Student.</p>
+
+      <h2 id="section-6">6. Responsibilities of Teachers, Schools, and Programs</h2>
+      <p>You agree that you will:</p>
+      <ul>
+        <li>Add only students you are authorized to teach or supervise.</li>
+        <li>Keep your roster accurate and remove students who should no longer have access.</li>
+        <li>Use student information and analytics only for legitimate educational purposes, in line with your own policies and applicable law.</li>
+        <li>Not share student performance data with people who have no authorized need to see it.</li>
+        <li>Supervise your Students' use of the Service as appropriate for their ages.</li>
+        <li>Keep your account secure and tell us promptly about any suspected misuse.</li>
+      </ul>
+
+      <h2 id="section-7">7. Parents and Guardians</h2>
+      <ul>
+        <li>If your child uses the Service through a class or program, ask their Teacher or Program about their progress. The Class Analytics dashboard is available to Teachers, not Parents.</li>
+        <li>If your child uses the Service independently, you may choose to manage their account where that feature is available.</li>
+        <li>Talk with your child about safe and healthy screen use. The Service has no built-in time limits, so use your device's own settings if you want them.</li>
+        <li>Contact your child's School or Program, or us, with questions or data requests.</li>
+      </ul>
+
+      <h2 id="section-8">8. Students</h2>
+      <p>If you are a Student, please:</p>
+      <ul>
+        <li>Play fairly and be kind.</li>
+        <li>Do not cheat or use bugs or shortcuts to get rewards you have not earned.</li>
+        <li>Do not share your account or, if you have one, your class code with anyone outside your class.</li>
+        <li>Use only a first name, and last name initial, and never share private information such as your address or phone number.</li>
+        <li>Ask your teacher, parent, guardian or a grown-up if something seems wrong.</li>
+      </ul>
+
+      <h2 id="section-9">9. Acceptable Use</h2>
+      <p>No one may:</p>
+      <ul>
+        <li>Break the law or violate anyone's rights.</li>
+        <li>Cheat, exploit bugs, or interfere with how the game or its rewards work.</li>
+        <li>Harass, bully, or abuse other users, or use the Service to send inappropriate content.</li>
+        <li>Try to access accounts, data, or systems that are not yours, or test or bypass our security.</li>
+        <li>Use bots, scrapers, or other automated tools, or overload the Service.</li>
+        <li>Copy, reverse engineer, or extract the source code, questions, or content of the Service, except as the law allows.</li>
+        <li>Copy question content or other game content to build a competing product or to train a machine learning model.</li>
+        <li>Resell or provide the Service to others, or use it for commercial purposes.</li>
+        <li>Misrepresent who you are, including claiming to be a Teacher or Program when you are not.</li>
+      </ul>
+      <p>We may investigate suspected violations and take action, including removing access.</p>
+
+      <h2 id="section-10">10. Coins, Characters, and Rewards</h2>
+      <p>Coins, stars, achievements, and characters are virtual items that exist only inside the game. Coins may be earned through gameplay and, if we offer that option, purchased through the Service. Virtual items have no cash value, cannot be exchanged for money, and cannot be sold or transferred between accounts. Purchasing coins gives you a limited right to use them within the Service; it does not give you ownership of the coins or any part of the Service.</p>
+      <p>We may adjust balances or progress to correct errors, cheating, or technical problems. Before any purchase, we will display the price and applicable purchase terms. Refunds and purchase rights are subject to applicable law and the rules of the app store or payment provider used for the purchase. If you purchase virtual items or features through a third-party app store (such as the Apple App Store or Google Play Store), all billing, refund policies, and transaction disputes are handled exclusively by that app store platform and are subject to their respective terms.</p>
+
+      <h2 id="section-11">11. Privacy and Your Information</h2>
+      <p>Our Privacy Policy explains what information we collect and how we use it. In short, to operate the Service we use account information (such as first name, last initial, school, and class, and for Teacher and Parent accounts only, email address) and gameplay information (such as questions answered, accuracy, progress, and rewards). We do not collect email addresses from Students. Teachers can see the progress and performance of the Students in their own classes.</p>
+      <p>We use service providers to run the Service, including cloud hosting and database services (Google Firebase) and an email delivery service used when you send us a support message. We do not display third-party advertising in the Service. We do not sell student personal information.</p>
+      <p>Do not send us sensitive information, such as government ID numbers or medical or payment details, through support messages or any other part of the Service.</p>
+
+      <h2 id="section-12">12. Schools, Programs, and Student Records</h2>
+      <p>If your School or Program has a separate written agreement with us, that agreement controls if it conflicts with these Terms. Where student information counts as an education record under FERPA, and your agreement with us says so, we act as a &ldquo;school official&rdquo; with a legitimate educational interest, and we use that information only for the purposes described in that agreement and our Privacy Policy.</p>
+      <p>Programs that are not schools may have different legal obligations. Each School or Program is responsible for meeting its own legal duties with respect to its Students' information.</p>
+
+      <h2 id="section-13">13. Data Requests, Retention, and Deletion</h2>
+      <p>You may request a copy of, or the deletion of, information associated with an account, either from within the app (Settings &gt; Data &amp; Privacy) or by contacting us at <a href="mailto:support@dontbelategame.com">support@dontbelategame.com</a>. Requests are reviewed and completed by our team, and may take several days. We may need to confirm your identity, or your authority over a Student's account, before acting on a request.</p>
+      <p>Deleting a class removes it and its roster from the Teacher's dashboard. It does not by itself delete Students' accounts or their gameplay history. Student information is kept for as long as needed to provide the Service, meet legal obligations, resolve disputes, and as described in our Privacy Policy, and is then deleted or de-identified. Inactive accounts and associated classroom rosters showing no activity for twenty-four (24) consecutive months may be permanently purged from our active systems.</p>
+
+      <h2 id="section-14">14. Messages and Feedback You Send Us</h2>
+      <p>If you send us a support message, idea, suggestion, or bug report (&ldquo;Feedback&rdquo;), you allow us to use it to respond to you and to improve the Service, without payment or obligation to you. Feedback is not confidential. Furthermore, you grant us a worldwide, non-exclusive, royalty-free license to use, display, and store any user-generated content or classroom configurations you create within the Service solely for the purpose of operating, maintaining, and improving the Service.</p>
+
+      <h2 id="section-15">15. Third-Party Services</h2>
+      <p>The Service depends on third-party services, such as your device's operating system (including its built-in text-to-speech), app stores, and the providers described in Section 11. Their own terms and privacy policies apply to your use of them. We are not responsible for third-party services, including their availability, security, or changes.</p>
+
+      <h2 id="section-16">16. Our Intellectual Property</h2>
+      <p>The Service, including its software, characters, artwork, music, questions and other educational content, designs, and the Don't Be Late! name and logos, is owned by Konita Games or its licensors and protected by intellectual property laws. Except for the limited license in Section 4, we grant you no rights. You may not use our name, logos, or other brand features without our written permission, except to accurately refer to the Service.</p>
+
+      <h2 id="section-17">17. Suspension and Termination</h2>
+      <h3>You.</h3>
+      <p>You may stop using the Service at any time and may request deletion of your account (Section 13). A Teacher or Program may remove a Student from a class at any time.</p>
+      <h3>Us.</h3>
+      <p>We may suspend or terminate access, with or without notice, if we reasonably believe someone has violated these Terms, if their use creates risk or legal exposure for others or for us, if the law requires it, or if we discontinue the Service. Where practical and lawful, we will try to explain why and give a chance to fix the problem.</p>
+      <h3>Effect.</h3>
+      <p>When your access ends, your license to use the Service ends too. Sections that by their nature should survive (including 10, 16, 18, 19, 20, 21, and 22) will survive.</p>
+
+      <h2 id="section-18">18. Disclaimers</h2>
+      <p class="caps">THE SERVICE IS PROVIDED &ldquo;AS IS&rdquo; AND &ldquo;AS AVAILABLE,&rdquo; WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY. TO THE FULLEST EXTENT THE LAW ALLOWS, WE DISCLAIM ALL WARRANTIES, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
+      <p>We do not promise that the Service will be uninterrupted, secure, or error-free, that questions, explanations, or analytics will be free of mistakes, or that the Service will produce any particular learning result. Some places do not allow certain exclusions, so parts of this section may not apply to you.</p>
+
+      <h2 id="section-19">19. Limitation of Liability</h2>
+      <p class="caps">TO THE FULLEST EXTENT THE LAW ALLOWS:</p>
+      <ul>
+        <li class="caps">KONITA GAMES AND ITS OFFICERS, EMPLOYEES, CONTRACTORS, AND SUPPLIERS WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR FOR LOST DATA, LOST PROGRESS OR REWARDS, OR LOST OPPORTUNITIES, ARISING FROM THESE TERMS OR THE SERVICE.</li>
+        <li class="caps">OUR TOTAL LIABILITY FOR ALL CLAIMS RELATING TO THE SERVICE WILL NOT EXCEED THE GREATER OF THE AMOUNT YOU PAID US IN THE PAST TWELVE MONTHS OR ONE HUNDRED U.S. DOLLARS (US $100).</li>
+        <li class="caps">NOTHING IN THESE TERMS LIMITS LIABILITY THAT CANNOT BE LIMITED BY LAW, INCLUDING LIABILITY FOR FRAUD, GROSS NEGLIGENCE, WILLFUL MISCONDUCT, OR DEATH OR PERSONAL INJURY CAUSED BY NEGLIGENCE.</li>
+      </ul>
+
+      <h2 id="section-20">20. Indemnification</h2>
+      <p>To the extent permitted by law, adult users and Schools or Programs agree to defend and hold harmless Konita Games from claims and costs (including reasonable attorneys' fees) arising from their violation of these Terms or the law, or their misuse of the Service. This section does not apply to Students, and does not apply to any School or Program that is legally unable to give such an indemnity.</p>
+
+      <h2 id="section-21">21. Disputes</h2>
+      <p>Before filing a claim, please write to us at <a href="mailto:support@dontbelategame.com">support@dontbelategame.com</a> and describe the problem. We will both try in good faith to resolve it informally for at least 30 days. Either party may bring an individual claim in small claims court. Any dispute that is not resolved informally will be brought in the state courts located in Madison County, Kentucky, or, if federal jurisdiction exists, the United States District Court for the Eastern District of Kentucky, Lexington Division. You and we consent to the jurisdiction of those courts. To the fullest extent permitted by applicable law, you and Konita Games agree that any dispute resolution proceedings will be conducted only on an individual basis and not as a plaintiff or class member in any purported class, consolidated, or representative action. If you are a consumer outside the United States, this section does not remove any mandatory protections of your local law.</p>
+
+      <h2 id="section-22">22. Governing Law</h2>
+      <p>These Terms are governed by the laws of the State of Kentucky, without regard to its conflict-of-laws rules.</p>
+
+      <h2 id="section-23">23. Changes to the Service and to These Terms</h2>
+      <p>We may change the Service at any time. We may also update these Terms. For material changes we will give at least 30 days' notice by posting the new Terms in the app with a new &ldquo;Last Updated&rdquo; date. Continuing to use the Service after changes take effect means you accept them. If you do not agree, stop using the Service and request deletion of your account before the effective date.</p>
+
+      <h2 id="section-24">24. Electronic Communications</h2>
+      <p>You agree that we may communicate with you electronically, including by email and in-app notice, about your account, legal notices, and changes to the Service or these Terms. Electronic notices satisfy any legal requirement that a notice be in writing.</p>
+
+      <h2 id="section-25">25. General Terms</h2>
+      <ul>
+        <li><strong>Entire agreement:</strong> these Terms, the Privacy Policy, and any written agreement with a School or Program are the whole agreement about the Service.</li>
+        <li><strong>Severability:</strong> if any part is unenforceable, the rest stays in effect.</li>
+        <li><strong>No waiver:</strong> not enforcing a term is not a waiver of it.</li>
+        <li><strong>Assignment:</strong> you may not transfer these Terms without our written consent. We may transfer them as part of a merger, acquisition, or sale of assets.</li>
+        <li><strong>Events beyond our control:</strong> neither side is liable for delays caused by events outside its reasonable control.</li>
+        <li><strong>Relationship:</strong> these Terms do not create a partnership, employment, or agency relationship.</li>
+        <li><strong>Headings</strong> are for convenience. &ldquo;Including&rdquo; means &ldquo;including without limitation.&rdquo;</li>
+      </ul>
+
+      <h2 id="section-26">26. How to Contact Us</h2>
+      <p>
+        Konita Games LLC<br>
+        101 Chestnut Street<br>
+        Berea, KY 40404
+      </p>
+      <p>
+        Support and legal notices: <a href="mailto:support@dontbelategame.com">support@dontbelategame.com</a><br>
+        Privacy: <a href="mailto:support@dontbelategame.com">support@dontbelategame.com</a><br>
+        Website: <a href="/">dontbelategame.com</a>
+      </p>
+    </article>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div style="text-align:center;">
+        <img src="Logo.png" alt="Don't Be Late!" style="height:48px;width:auto;">
+        <p class="footer-tagline">Redefining learning with gamification. · A Konita Games LLC product.</p>
+      </div>
+
+      <div class="social-row">
+        <a href="https://www.instagram.com/dontbelategame/" class="social-btn" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          Instagram
+        </a>
+        <a href="https://www.tiktok.com/@konita_yt" class="social-btn" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9.05a8.16 8.16 0 0 0 4.77 1.52V7.12a4.85 4.85 0 0 1-1-.43z"/></svg>
+          TikTok
+        </a>
+        <a href="https://www.linkedin.com/company/konita-games" class="social-btn" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://www.youtube.com/@Konita_YT" class="social-btn" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg>
+          YouTube
+        </a>
+      </div>
+
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/pilot">Request a Pilot</a>
+        <a href="/privacy">Privacy Policy</a>
+      </div>
+
+      <p class="footer-copy">© 2026 Konita Games LLC · All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

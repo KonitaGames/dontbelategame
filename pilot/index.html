@@ -556,6 +556,20 @@ footer {
   font-size: 0.78rem;
   font-weight: 500;
 }
+.footer-links {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+.footer-links a {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.footer-links a:hover { color: var(--text); }
 
 /*Add fonts*/
 
@@ -855,6 +869,11 @@ footer {
 <footer>
   <div class="footer-inner">
     <img src="Logo.png" alt="Don't Be Late!" style="height:48px;width:auto;">
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms of Use</a>
+    </div>
     <p class="footer-copy">© 2026 Konita Games LLC · All rights reserved. · A Konita Games LLC product.</p>
   </div>
 </footer>
