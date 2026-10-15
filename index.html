@@ -89,8 +89,18 @@
   /*Nav bar*/
   #hero { padding-top: 140px; }
 
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  nav .btn { padding: 12px 26px; font-size: 0.92rem; }
+
   @media(max-width: 600px) {
-    nav .btn-yellow {
+    nav { padding: 12px 16px !important; }
+    nav img { height: 40px !important; }
+    .nav-actions { gap: 6px; }
+    nav .btn {
       padding: 8px 12px;
       font-size: 0.78rem;
     }
@@ -724,9 +734,10 @@
       <a href="index.html">
         <img src="Logo.png" alt="Don't Be Late!" style="height:55px;width:auto;">
       </a>
-      <a href="/pilot" class="btn btn-yellow">
-        Request a Pilot
-      </a>
+      <div class="nav-actions">
+        <a href="teacher-analytics/index.html" class="btn btn-outline">Teacher Analytics</a>
+        <a href="play/index.html" class="btn btn-yellow">Play Now</a>
+      </div>
     </nav>
 
   <!-- ═══ FLOATING MATH BACKGROUND ═══ -->
@@ -1043,6 +1054,8 @@
       </div>
 
       <div class="footer-links">
+        <a href="play/index.html">Play Now</a>
+        <a href="teacher-analytics/index.html">Teacher Analytics</a>
         <a href="/pilot">Request a Pilot</a>
         <a href="/privacy">Privacy Policy</a>
         <a href="/terms">Terms of Use</a>
