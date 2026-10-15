@@ -289,7 +289,7 @@
     position: relative;
     width: 100%;
     max-width: 1100px;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 10;
     border-radius: 24px;
     overflow: hidden;
     background: #0f172a;
@@ -473,13 +473,14 @@
   </footer>
 
   <script>
-    // Unity WebGL build settings. Copy the build's "Build" folder next to this page,
-    // then set BUILD_NAME to the file prefix Unity generated (e.g. "MyGame" for
-    // Build/MyGame.loader.js). Leave it empty to show the placeholder.
-    const BUILD_NAME = '';
-    const BUILD_URL = 'Build';
-    // Match the compression setting used in Unity's Player Settings: '', '.gz', or '.br'.
-    const BUILD_EXT = '';
+    // Unity WebGL build settings. BUILD_NAME is the file prefix Unity generated
+    // (e.g. "MyGame" for MyGame.loader.js); leave it empty to show the placeholder.
+    // The build files are served from Cloudflare R2 because they exceed GitHub's
+    // 100 MB file limit; the bucket's CORS policy must allow this site's origin.
+    const BUILD_NAME = 'WebGL-Student';
+    const BUILD_URL = 'https://pub-c0126aea43254adf923bbc903bfd3946.r2.dev/play';
+    // File extension appended by Unity's compression setting: '', '.gz', '.br', or '.unityweb'.
+    const BUILD_EXT = '.unityweb';
 
     const shell = document.getElementById('gameShell');
     const canvas = document.getElementById('unity-canvas');
@@ -501,9 +502,9 @@
           frameworkUrl: `${BUILD_URL}/${BUILD_NAME}.framework.js${BUILD_EXT}`,
           codeUrl: `${BUILD_URL}/${BUILD_NAME}.wasm${BUILD_EXT}`,
           streamingAssetsUrl: 'StreamingAssets',
-          companyName: 'Konita Games LLC',
-          productName: "Don't Be Late!",
-          productVersion: '1.0',
+          companyName: 'KonitaGames',
+          productName: 'dont-be-late',
+          productVersion: '0.1.2',
         }, (progress) => {
           progressFill.style.width = (progress * 100) + '%';
         }).then((instance) => {
