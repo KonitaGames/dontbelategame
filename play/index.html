@@ -490,6 +490,24 @@
     const fullscreenBtn = document.getElementById('fullscreenBtn');
     let unityInstance = null;
 
+    // Anonymous load-time and error counters for the admin page (no user info is sent).
+    // Wrapped so a blocked or failed request can never affect the game.
+    const loadStartedAt = performance.now();
+    let clientEventsSent = 0;
+    function logClientEvent(data) {
+      try {
+        if (clientEventsSent++ >= 20) return;
+        fetch('https://us-central1-don-t-be-late-e3d9b.cloudfunctions.net/logClientEvent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ data: Object.assign({ app: 'student' }, data) }),
+          keepalive: true,
+        }).catch(() => {});
+      } catch (e) {}
+    }
+    window.addEventListener('error', (e) => logClientEvent({ type: 'exception', message: String(e.message || e.error || 'error') }));
+    window.addEventListener('unhandledrejection', (e) => logClientEvent({ type: 'exception', message: String((e.reason && e.reason.message) || e.reason || 'unhandled rejection') }));
+
     if (BUILD_NAME) {
       placeholder.style.display = 'none';
       loading.classList.add('show');
@@ -511,11 +529,14 @@
           unityInstance = instance;
           loading.classList.remove('show');
           fullscreenBtn.disabled = false;
+          logClientEvent({ type: 'game_loaded', seconds: Math.round((performance.now() - loadStartedAt) / 100) / 10 });
         }).catch((err) => {
+          logClientEvent({ type: 'game_load_failed', message: String((err && err.message) || err) });
           loading.querySelector('.ph-sub').textContent = 'Something went wrong loading the game. Please refresh and try again.';
           console.error(err);
         });
       };
+      script.onerror = () => logClientEvent({ type: 'game_load_failed', message: 'loader script could not download' });
       document.body.appendChild(script);
     }
 

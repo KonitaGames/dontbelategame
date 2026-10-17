@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="../favicon.ico">
+<title>Admin — Don't Be Late!</title>
+<style>
+  @font-face { font-family: 'Fredoka One'; src: url('../Fonts/FredokaOne-Regular.ttf') format('truetype'); font-display: swap; }
+  @font-face { font-family: 'Plus Jakarta Sans'; src: url('../Fonts/PlusJakartaSans-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Plus Jakarta Sans'; src: url('../Fonts/PlusJakartaSans-SemiBold.ttf') format('truetype'); font-weight: 600; font-display: swap; }
+
+  :root {
+    --bg: #f7f8fc; --card: #ffffff; --text: #0f172a; --muted: #64748b; --line: #e5e7ef;
+    --blue: #2B7FFF; --green: #0DB067; --orange: #FF6B35; --pink: #E8198B; --yellow: #F5A800; --red: #e5484d;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0d1220; --card: #161d2f; --text: #e6e9f2; --muted: #93a0b8; --line: #263049; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 15px; }
+  h1, h2 { font-family: 'Fredoka One', system-ui, sans-serif; font-weight: 400; margin: 0; }
+  h1 { font-size: 26px; }
+  h2 { font-size: 19px; margin-bottom: 12px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 24px 16px 48px; }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .meta { color: var(--muted); font-size: 13px; }
+  button { font: inherit; font-weight: 600; border: 0; border-radius: 10px; padding: 9px 16px; cursor: pointer; background: var(--blue); color: #fff; }
+  button.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+  button.seg { background: transparent; color: var(--muted); border: 1px solid var(--line); padding: 5px 12px; font-size: 13px; }
+  button.seg.on { background: var(--blue); color: #fff; border-color: var(--blue); }
+  button:disabled { opacity: .6; cursor: default; }
+
+  .login { max-width: 360px; margin: 12vh auto; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
+  .login h1 { margin-bottom: 6px; }
+  .login p { color: var(--muted); margin: 0 0 18px; font-size: 14px; }
+  .login input { width: 100%; font: inherit; padding: 11px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); margin-bottom: 10px; }
+  .login button { width: 100%; margin-top: 4px; }
+  .error { color: var(--red); font-size: 14px; min-height: 20px; margin-top: 10px; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .card .label { color: var(--muted); font-size: 13px; }
+  .card .value { font-family: 'Fredoka One', system-ui, sans-serif; font-size: 30px; margin-top: 2px; }
+  .card .sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .card.live .value { color: var(--green); }
+
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; margin-bottom: 16px; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; min-width: 0; }
+  .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .panel-head h2 { margin-bottom: 0; }
+  .segs { display: flex; gap: 6px; }
+  .chart { position: relative; height: 240px; margin-top: 12px; }
+  .note { color: var(--muted); font-size: 13px; margin-top: 10px; line-height: 1.45; }
+  .empty { color: var(--muted); font-size: 14px; padding: 24px 0; text-align: center; }
+
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; }
+  td.num, th.num { text-align: right; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+  .pill.on { background: rgba(13,176,103,.15); color: var(--green); }
+  .pill.off { background: rgba(100,116,139,.15); color: var(--muted); }
+  .links a { color: var(--blue); margin-right: 14px; font-weight: 600; text-decoration: none; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div id="loginView" class="login">
+  <h1>Admin</h1>
+  <p>Don't Be Late! usage dashboard</p>
+  <form id="loginForm">
+    <input id="email" type="email" placeholder="Email" autocomplete="username" required>
+    <input id="password" type="password" placeholder="Password" autocomplete="current-password" required>
+    <button id="loginBtn" type="submit">Log in</button>
+  </form>
+  <div id="loginError" class="error"></div>
+</div>
+
+<div id="dashView" class="wrap hidden">
+  <div class="top">
+    <div>
+      <h1>Don't Be Late! · Admin</h1>
+      <div class="meta" id="updated">Loading…</div>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button id="refreshBtn">Refresh</button>
+      <button id="logoutBtn" class="ghost">Log out</button>
+    </div>
+  </div>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="panel" style="margin-bottom:16px;">
+    <div class="panel-head">
+      <h2>Active students per day</h2>
+      <div class="segs" id="rangeSegs">
+        <button class="seg" data-days="7">7d</button>
+        <button class="seg on" data-days="30">30d</button>
+        <button class="seg" data-days="90">90d</button>
+        <button class="seg" data-days="0">All</button>
+      </div>
+    </div>
+    <div class="chart"><canvas id="dauChart"></canvas></div>
+    <div class="note">A student counts as active on a day they answered at least one question. Days are in UTC (8pm Eastern is already "tomorrow").</div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>Questions and accuracy</h2>
+      <div class="chart"><canvas id="questionsChart"></canvas></div>
+    </div>
+    <div class="panel">
+      <h2>Sign-ups and classrooms created</h2>
+      <div class="chart"><canvas id="growthChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>Retention</h2>
+      <div class="table-scroll"><table id="retentionTable"></table></div>
+      <div class="note">Students grouped by the week of their first active day. <b>Day 1</b> = came back the next day, <b>Day 7</b> = came back within a week, <b>Day 30</b> = within a month. "—" means that group isn't old enough yet.</div>
+    </div>
+    <div class="panel">
+      <h2>Session length</h2>
+      <div class="chart"><canvas id="sessionChart"></canvas></div>
+      <div class="note" id="sessionNote">Average minutes per play session, per day.</div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:16px;">
+    <h2>Classrooms</h2>
+    <div class="table-scroll"><table id="classTable"></table></div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>Game load time</h2>
+      <div class="chart"><canvas id="loadChart"></canvas></div>
+      <div class="note">From the Play and Teacher pages. Counting started when this dashboard went live, so earlier days are empty.</div>
+    </div>
+    <div class="panel">
+      <h2>Errors and crashes</h2>
+      <div class="table-scroll"><table id="errorTable"></table></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Revenue</h2>
+    <div class="note" style="margin-top:0;">Payments are tracked by the stores, which are the most accurate source:</div>
+    <div class="links" style="margin-top:10px;">
+      <a href="https://dashboard.stripe.com/" target="_blank" rel="noopener">Stripe</a>
+      <a href="https://appstoreconnect.apple.com/" target="_blank" rel="noopener">App Store Connect</a>
+      <a href="https://play.google.com/console/" target="_blank" rel="noopener">Google Play Console</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+  const API_KEY = 'AIzaSyAL94kiPjRLnEQ-6f4WgvsqvigsFHknjcI';
+  const FUNCTION_URL = 'https://us-central1-don-t-be-late-e3d9b.cloudfunctions.net/adminStats';
+  const AUTO_REFRESH_MS = 5 * 60 * 1000;
+
+  // The sign-in is only kept in memory: closing the tab logs out.
+  let session = null;   // { idToken, refreshToken, expiresAt }
+  let stats = null;
+  let rangeDays = 30;
+  let autoTimer = null;
+  const charts = {};
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const pct = (a, b) => (b ? Math.round((a / b) * 100) + '%' : '—');
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+  // ── Sign in ──
+  $('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    $('loginError').textContent = '';
+    $('loginBtn').disabled = true;
+    try {
+      const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: $('email').value.trim(), password: $('password').value, returnSecureToken: true }),
+      });
+      const body = await res.json();
+      if (!res.ok) throw new Error(/PASSWORD|EMAIL|CREDENTIAL/.test(body.error?.message || '') ? 'Wrong email or password.' : 'Couldn\'t log in. Try again.');
+      session = { idToken: body.idToken, refreshToken: body.refreshToken, expiresAt: Date.now() + (Number(body.expiresIn) - 60) * 1000 };
+      $('password').value = '';
+      await load(false);
+      $('loginView').classList.add('hidden');
+      $('dashView').classList.remove('hidden');
+      renderAll();
+      autoTimer = setInterval(() => load(false).then(renderAll).catch(showLoadError), AUTO_REFRESH_MS);
+    } catch (err) {
+      session = null;
+      $('loginError').textContent = err.message;
+    } finally {
+      $('loginBtn').disabled = false;
+    }
+  });
+
+  $('logoutBtn').addEventListener('click', () => {
+    session = null; stats = null;
+    clearInterval(autoTimer);
+    $('dashView').classList.add('hidden');
+    $('loginView').classList.remove('hidden');
+  });
+
+  $('refreshBtn').addEventListener('click', async () => {
+    $('refreshBtn').disabled = true;
+    try { await load(true); renderAll(); } catch (err) { showLoadError(err); }
+    $('refreshBtn').disabled = false;
+  });
+
+  document.querySelectorAll('#rangeSegs .seg').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('#rangeSegs .seg').forEach((x) => x.classList.toggle('on', x === b));
+    rangeDays = Number(b.dataset.days);
+    renderDau();
+  }));
+
+  async function freshToken() {
+    if (Date.now() < session.expiresAt) return session.idToken;
+    const res = await fetch(`https://securetoken.googleapis.com/v1/token?key=${API_KEY}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(session.refreshToken)}`,
+    });
+    const body = await res.json();
+    if (!res.ok) throw new Error('Your login expired. Log in again.');
+    session = { idToken: body.id_token, refreshToken: body.refresh_token, expiresAt: Date.now() + (Number(body.expires_in) - 60) * 1000 };
+    return session.idToken;
+  }
+
+  async function load(refresh) {
+    const res = await fetch(FUNCTION_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${await freshToken()}` },
+      body: JSON.stringify({ data: { refresh } }),
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok || body.error) throw new Error(body.error?.message || `Couldn't load stats (${res.status}).`);
+    stats = body.result;
+  }
+
+  function showLoadError(err) {
+    $('updated').textContent = err.message;
+  }
+
+  // ── Render ──
+  function renderAll() {
+    if (!stats) return;
+    const t = stats.totals;
+    $('updated').textContent = `Updated ${new Date(stats.computedAt).toLocaleString()} · refreshes every 5 min`;
+
+    const cards = [
+      { label: 'Active last hour', value: t.activeLastHour, sub: `${t.activeLast15Min} in last 15 min (approx.)`, live: true },
+      { label: 'Active today', value: t.activeToday, sub: 'students, UTC day' },
+      { label: 'Weekly active', value: t.wau, sub: 'last 7 days' },
+      { label: 'Monthly active', value: t.mau, sub: 'last 30 days' },
+      { label: 'Stickiness', value: t.stickiness + '%', sub: `DAU ÷ MAU · ${t.stickinessWeekdays}% school days` },
+      { label: 'Students', value: t.students, sub: `${t.studentsWithoutClass} not in a class` },
+      { label: 'Classrooms', value: t.classrooms, sub: `${t.activeClassrooms} active this week` },
+      { label: 'Teachers', value: t.teachers, sub: `${t.teachersWithClass} with a class` },
+      { label: 'Came back', value: pct(t.returned, t.everActive), sub: `${t.returned} of ${t.everActive} played on 2+ days` },
+      { label: 'Activation', value: pct(t.activated, t.students), sub: `${t.activated} finished a level` },
+      { label: 'Questions', value: t.questions.toLocaleString(), sub: `${pct(t.correct, t.questions)} correct` },
+      { label: 'Levels finished', value: t.totalCompletions.toLocaleString(), sub: 'all time' },
+    ];
+    $('cards').innerHTML = cards.map((c) => `
+      <div class="card${c.live ? ' live' : ''}">
+        <div class="label">${esc(c.label)}</div>
+        <div class="value">${esc(c.value)}</div>
+        <div class="sub">${esc(c.sub)}</div>
+      </div>`).join('');
+
+    renderDau();
+    renderQuestions();
+    renderGrowth();
+    renderSessions();
+    renderRetention();
+    renderClasses();
+    renderClient();
+  }
+
+  const shortDay = (k) => new Date(k + 'T00:00:00Z').toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' });
+
+  function chart(id, config) {
+    if (charts[id]) charts[id].destroy();
+    Chart.defaults.color = css('--muted');
+    Chart.defaults.borderColor = css('--line');
+    Chart.defaults.font.family = "'Plus Jakarta Sans', system-ui, sans-serif";
+    config.options = Object.assign({
+      responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } },
+    }, config.options || {});
+    charts[id] = new Chart($(id), config);
+  }
+
+  function rangeOf(list) {
+    return rangeDays ? list.slice(-rangeDays) : list;
+  }
+
+  function renderDau() {
+    const d = rangeOf(stats.days);
+    chart('dauChart', {
+      type: 'line',
+      data: {
+        labels: d.map((x) => shortDay(x.day)),
+        datasets: [
+          { label: 'Daily active', data: d.map((x) => x.dau), borderColor: css('--blue'), backgroundColor: 'rgba(43,127,255,.12)', fill: true, tension: .25 },
+          { label: 'Weekly active', data: d.map((x) => x.wau), borderColor: css('--green'), tension: .25, pointRadius: 0 },
+          { label: 'Monthly active', data: d.map((x) => x.mau), borderColor: css('--yellow'), tension: .25, pointRadius: 0, borderDash: [5, 4] },
+        ],
+      },
+      options: { scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+  }
+
+  function renderQuestions() {
+    const d = rangeOf(stats.days);
+    chart('questionsChart', {
+      data: {
+        labels: d.map((x) => shortDay(x.day)),
+        datasets: [
+          { type: 'bar', label: 'Questions answered', data: d.map((x) => x.questions), backgroundColor: 'rgba(43,127,255,.6)', yAxisID: 'y' },
+          { type: 'line', label: 'Accuracy %', data: d.map((x) => (x.questions ? Math.round((x.correct / x.questions) * 100) : null)), borderColor: css('--green'), yAxisID: 'y1', spanGaps: true },
+        ],
+      },
+      options: { scales: {
+        y: { beginAtZero: true, ticks: { precision: 0 } },
+        y1: { position: 'right', min: 0, max: 100, grid: { drawOnChartArea: false }, ticks: { callback: (v) => v + '%' } },
+      } },
+    });
+  }
+
+  function renderGrowth() {
+    const d = rangeOf(stats.days);
+    chart('growthChart', {
+      type: 'bar',
+      data: {
+        labels: d.map((x) => shortDay(x.day)),
+        datasets: [
+          { label: 'Student sign-ups', data: d.map((x) => x.signups), backgroundColor: 'rgba(255,107,53,.7)' },
+          { label: 'Classrooms created', data: d.map((x) => x.classroomsCreated), backgroundColor: 'rgba(232,25,139,.7)' },
+        ],
+      },
+      options: { scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+  }
+
+  function renderSessions() {
+    const d = rangeOf(stats.days);
+    const hasData = d.some((x) => x.sessions > 0);
+    $('sessionNote').textContent = hasData
+      ? 'Average minutes per play session, per day.'
+      : 'No finished sessions recorded yet. Sessions are counted when a student leaves a level.';
+    chart('sessionChart', {
+      type: 'bar',
+      data: {
+        labels: d.map((x) => shortDay(x.day)),
+        datasets: [
+          { label: 'Avg minutes per session', data: d.map((x) => (x.sessions ? Math.round((x.sessionSeconds / x.sessions / 60) * 10) / 10 : null)), backgroundColor: 'rgba(245,168,0,.75)' },
+        ],
+      },
+      options: { scales: { y: { beginAtZero: true } } },
+    });
+  }
+
+  function renderRetention() {
+    const cell = ([back, of]) => (of ? `${pct(back, of)} <span class="meta">(${back}/${of})</span>` : '—');
+    $('retentionTable').innerHTML = stats.cohorts.length
+      ? `<tr><th>First week</th><th class="num">Students</th><th class="num">Day 1</th><th class="num">Day 7</th><th class="num">Day 30</th></tr>` +
+        stats.cohorts.map((c) => `<tr><td>${shortDay(c.week)}</td><td class="num">${c.users}</td><td class="num">${cell(c.d1)}</td><td class="num">${cell(c.d7)}</td><td class="num">${cell(c.d30)}</td></tr>`).join('')
+      : `<tr><td class="empty">No activity yet.</td></tr>`;
+  }
+
+  function renderClasses() {
+    const ago = (iso) => {
+      if (!iso) return 'never';
+      const mins = Math.round((Date.now() - Date.parse(iso)) / 60000);
+      if (mins < 60) return `${mins} min ago`;
+      if (mins < 48 * 60) return `${Math.round(mins / 60)} h ago`;
+      return `${Math.round(mins / 1440)} days ago`;
+    };
+    $('classTable').innerHTML =
+      `<tr><th>Class</th><th>Teacher</th><th>Grade</th><th>Created</th><th class="num">Students</th><th class="num">Active 7d</th><th class="num">Today</th><th class="num">Finished a level</th><th class="num">Questions</th><th class="num">Accuracy</th><th>Last activity</th></tr>` +
+      stats.classrooms.map((c) => `<tr>
+        <td><b>${esc(c.name)}</b> <span class="meta">${esc(c.code)}</span></td>
+        <td>${esc(c.teacher)}</td>
+        <td>${esc(c.grade)}</td>
+        <td>${new Date(c.createdAt).toLocaleDateString()}</td>
+        <td class="num">${c.students}</td>
+        <td class="num"><span class="pill ${c.active7 ? 'on' : 'off'}">${c.active7}</span></td>
+        <td class="num">${c.activeToday}</td>
+        <td class="num">${c.completedALevel}</td>
+        <td class="num">${c.questions.toLocaleString()}</td>
+        <td class="num">${pct(c.correct, c.questions)}</td>
+        <td>${ago(c.lastActivity)}</td>
+      </tr>`).join('');
+  }
+
+  function renderClient() {
+    const d = stats.client;
+    chart('loadChart', {
+      data: {
+        labels: d.map((x) => shortDay(x.day)),
+        datasets: [
+          { type: 'line', label: 'Avg load seconds', data: d.map((x) => x.avgLoadSeconds), borderColor: css('--blue'), yAxisID: 'y' },
+          { type: 'bar', label: 'Loads', data: d.map((x) => x.loads), backgroundColor: 'rgba(13,176,103,.5)', yAxisID: 'y1' },
+          { type: 'bar', label: 'Failed loads', data: d.map((x) => x.loadFailures), backgroundColor: 'rgba(229,72,77,.7)', yAxisID: 'y1' },
+        ],
+      },
+      options: { scales: {
+        y: { beginAtZero: true, title: { display: true, text: 'seconds' } },
+        y1: { position: 'right', beginAtZero: true, grid: { drawOnChartArea: false }, ticks: { precision: 0 } },
+      } },
+    });
+    const totalErrors = d.reduce((s, x) => s + x.errors + x.loadFailures, 0);
+    $('errorTable').innerHTML = stats.topErrors.length
+      ? `<tr><th>Error</th><th class="num">Count</th></tr>` +
+        stats.topErrors.map((e) => `<tr><td style="white-space:normal">${esc(e.message)}</td><td class="num">${e.count}</td></tr>`).join('') +
+        `<tr><td class="meta">Total errors and failed loads</td><td class="num">${totalErrors}</td></tr>`
+      : `<tr><td class="empty">No errors recorded yet.</td></tr>`;
+  }
+</script>
+</body>
+</html>
