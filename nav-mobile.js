@@ -21,9 +21,12 @@
     '.nm-links[hidden] { display: none; }',
     '.nm-panel a { display: block; padding: 11px 4px; font-size: 0.98rem; font-weight: 600; color: var(--text, #0f172a); text-decoration: none; border-radius: 8px; }',
     '.nm-panel a:hover, .nm-panel a:focus-visible { color: #0170B8; }',
+    '.nm-panel a.nm-cta { margin-top: 14px; padding: 14px; border-radius: 100px; background: var(--primary, #0197F6); color: #fff; text-align: center; font-weight: 800; }',
+    '.nm-panel a.nm-cta:hover, .nm-panel a.nm-cta:focus-visible { color: #fff; }',
     '@media (max-width: ' + BREAKPOINT + 'px) {',
     '  nav .nav-links { display: none !important; }',
     '  .nm-toggle { display: inline-flex; }',
+    '  .nm-right > :not(.nm-toggle) { display: none !important; }',
     '}'
   ].join('\n');
   document.head.appendChild(css);
@@ -73,6 +76,13 @@
   right.className = 'nm-right';
   var lastChild = nav.lastElementChild;
   if (lastChild && !lastChild.contains(links)) {
+    if (lastChild.tagName === 'A') {
+      var cta = document.createElement('a');
+      cta.href = lastChild.getAttribute('href');
+      cta.className = 'nm-cta';
+      cta.textContent = lastChild.textContent.trim();
+      panel.appendChild(cta);
+    }
     nav.insertBefore(right, lastChild);
     right.appendChild(lastChild);
   } else {
