@@ -11,14 +11,15 @@
     '.nm-toggle { display: none; align-items: center; justify-content: center; width: 42px; height: 42px; padding: 0; border: 0; border-radius: 10px; background: none; color: var(--text, #0f172a); cursor: pointer; }',
     '.nm-toggle:hover { background: rgba(15,23,42,0.06); }',
     '.nm-toggle svg { width: 24px; height: 24px; }',
-    '.nm-toggle .nm-close { display: none; }',
-    '.nm-toggle[aria-expanded="true"] .nm-open { display: none; }',
-    '.nm-toggle[aria-expanded="true"] .nm-close { display: block; }',
     '.nm-panel { position: fixed; left: 0; right: 0; z-index: 999; overflow-y: auto; padding: 8px 20px 24px; background: #fff; border-bottom: 1px solid rgba(0,0,0,0.08); box-shadow: 0 18px 40px rgba(15,23,42,0.12); }',
     '.nm-panel[hidden] { display: none; }',
-    '.nm-group + .nm-group { margin-top: 6px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.06); }',
-    '.nm-heading { padding: 10px 4px 4px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted, #64748b); }',
-    '.nm-panel a { display: block; padding: 12px 4px; font-size: 1.02rem; font-weight: 700; color: var(--text, #0f172a); text-decoration: none; border-radius: 8px; }',
+    '.nm-group + .nm-group { border-top: 1px solid rgba(0,0,0,0.06); }',
+    '.nm-heading { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 14px 4px; border: 0; background: none; font: 800 1.05rem var(--font-body, sans-serif); color: var(--text, #0f172a); cursor: pointer; text-align: left; }',
+    '.nm-heading svg { width: 12px; height: 12px; transition: transform 0.18s; }',
+    '.nm-heading[aria-expanded="true"] svg { transform: rotate(180deg); }',
+    '.nm-links { padding: 0 0 8px 12px; }',
+    '.nm-links[hidden] { display: none; }',
+    '.nm-panel a { display: block; padding: 11px 4px; font-size: 0.98rem; font-weight: 600; color: var(--text, #0f172a); text-decoration: none; border-radius: 8px; }',
     '.nm-panel a:hover, .nm-panel a:focus-visible { color: #0170B8; }',
     '@media (max-width: ' + BREAKPOINT + 'px) {',
     '  nav .nav-links { display: none !important; }',
@@ -31,17 +32,30 @@
   panel.className = 'nm-panel';
   panel.id = 'nm-panel';
   panel.hidden = true;
-  links.querySelectorAll('.nav-item').forEach(function (item) {
+  links.querySelectorAll('.nav-item').forEach(function (item, i) {
     var label = item.querySelector('.nav-link');
     var menu = item.querySelector('.nav-dropdown-menu');
     if (!label || !menu) return;
     var group = document.createElement('div');
     group.className = 'nm-group';
-    var heading = document.createElement('div');
+    var heading = document.createElement('button');
+    heading.type = 'button';
     heading.className = 'nm-heading';
+    heading.setAttribute('aria-expanded', 'false');
+    heading.setAttribute('aria-controls', 'nm-links-' + i);
     heading.textContent = label.textContent.trim();
+    heading.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 3.5 5 7l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    var list = document.createElement('div');
+    list.className = 'nm-links';
+    list.id = 'nm-links-' + i;
+    list.hidden = true;
+    menu.querySelectorAll('a').forEach(function (a) { list.appendChild(a.cloneNode(true)); });
+    heading.addEventListener('click', function () {
+      list.hidden = !list.hidden;
+      heading.setAttribute('aria-expanded', String(!list.hidden));
+    });
     group.appendChild(heading);
-    menu.querySelectorAll('a').forEach(function (a) { group.appendChild(a.cloneNode(true)); });
+    group.appendChild(list);
     panel.appendChild(group);
   });
   document.body.appendChild(panel);
@@ -52,9 +66,7 @@
   toggle.setAttribute('aria-label', 'Menu');
   toggle.setAttribute('aria-controls', 'nm-panel');
   toggle.setAttribute('aria-expanded', 'false');
-  toggle.innerHTML =
-    '<svg class="nm-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>' +
-    '<svg class="nm-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  toggle.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
 
   // Group the hamburger with the nav's right-hand button so space-between keeps them together.
   var right = document.createElement('div');
@@ -72,6 +84,10 @@
     if (open) panel.style.top = nav.getBoundingClientRect().bottom + 'px';
     panel.style.maxHeight = open ? 'calc(100vh - ' + panel.style.top + ')' : '';
     panel.hidden = !open;
+    if (!open) panel.querySelectorAll('.nm-links').forEach(function (l) {
+      l.hidden = true;
+      l.previousElementSibling.setAttribute('aria-expanded', 'false');
+    });
     toggle.setAttribute('aria-expanded', String(open));
   }
 
