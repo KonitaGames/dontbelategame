@@ -13,7 +13,7 @@
 
   :root {
     --bg: #f7f8fc; --card: #ffffff; --text: #0f172a; --muted: #64748b; --line: #e5e7ef;
-    --blue: #2B7FFF; --green: #0DB067; --orange: #FF6B35; --pink: #E8198B; --yellow: #F5A800; --red: #e5484d;
+    --blue: #2B7FFF; --green: #0DB067; --orange: #FFA552; --pink: #E8198B; --primary: #0197F6; --red: #e5484d;
   }
   @media (prefers-color-scheme: dark) {
     :root { --bg: #0d1220; --card: #161d2f; --text: #e6e9f2; --muted: #93a0b8; --line: #263049; }
@@ -316,7 +316,7 @@
         datasets: [
           { label: 'Daily active', data: d.map((x) => x.dau), borderColor: css('--blue'), backgroundColor: 'rgba(43,127,255,.12)', fill: true, tension: .25 },
           { label: 'Weekly active', data: d.map((x) => x.wau), borderColor: css('--green'), tension: .25, pointRadius: 0 },
-          { label: 'Monthly active', data: d.map((x) => x.mau), borderColor: css('--yellow'), tension: .25, pointRadius: 0, borderDash: [5, 4] },
+          { label: 'Monthly active', data: d.map((x) => x.mau), borderColor: css('--orange'), tension: .25, pointRadius: 0, borderDash: [5, 4] },
         ],
       },
       options: { scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
@@ -347,7 +347,7 @@
       data: {
         labels: d.map((x) => shortDay(x.day)),
         datasets: [
-          { label: 'Student sign-ups', data: d.map((x) => x.signups), backgroundColor: 'rgba(255,107,53,.7)' },
+          { label: 'Student sign-ups', data: d.map((x) => x.signups), backgroundColor: 'rgba(255,165,82,.7)' },
           { label: 'Classrooms created', data: d.map((x) => x.classroomsCreated), backgroundColor: 'rgba(232,25,139,.7)' },
         ],
       },
@@ -366,7 +366,7 @@
       data: {
         labels: d.map((x) => shortDay(x.day)),
         datasets: [
-          { label: 'Avg minutes per session', data: d.map((x) => (x.sessions ? Math.round((x.sessionSeconds / x.sessions / 60) * 10) / 10 : null)), backgroundColor: 'rgba(245,168,0,.75)' },
+          { label: 'Avg minutes per session', data: d.map((x) => (x.sessions ? Math.round((x.sessionSeconds / x.sessions / 60) * 10) / 10 : null)), backgroundColor: 'rgba(1,151,246,.75)' },
         ],
       },
       options: { scales: { y: { beginAtZero: true } } },
