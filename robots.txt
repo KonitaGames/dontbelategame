@@ -1,0 +1,6 @@
+# Everything is crawlable. Do not add Disallow rules for JS/CSS — Google needs
+# them to render the page.
+User-agent: *
+Allow: /
+
+Sitemap: https://www.dontbelategame.com/sitemap.xml
