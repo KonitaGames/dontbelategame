@@ -429,26 +429,34 @@
   }
   button.btn { font-family: var(--font-body); cursor: pointer; }
   .btn[disabled] { opacity: 0.45; pointer-events: none; }
-  .feedback-form {
-    margin-top: 56px;
-    width: 100%;
-    max-width: 640px;
-    padding: 32px 28px;
-    border-radius: 24px;
-    background: var(--surface);
-    border: 1px solid var(--border);
+  .feedback-fab {
+    position: absolute;
+    top: calc(17% + env(safe-area-inset-top, 0px));
+    right: calc(16px + env(safe-area-inset-right, 0px));
+    z-index: 10;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px 9px 13px;
+    border-radius: 100px;
+    background: rgba(15,23,42,0.6);
+    border: 2px solid rgba(255,255,255,0.85);
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    opacity: 0.85;
+    transition: opacity 0.15s, background 0.15s;
   }
-  .feedback-form h2 {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: 1.6rem;
-    margin-bottom: 10px;
-  }
-  .feedback-form p {
-    color: var(--muted);
-    font-size: 0.98rem;
-    line-height: 1.6;
-    margin-bottom: 22px;
+  .feedback-fab.show { display: inline-flex; }
+  .feedback-fab:hover,
+  .feedback-fab:focus-visible { opacity: 1; background: rgba(15,23,42,0.8); }
+  .feedback-fab:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+  .feedback-fab svg { width: 18px; height: 18px; flex-shrink: 0; }
+  @media (max-width: 760px) {
+    .feedback-fab { padding: 9px; }
+    .feedback-fab span { display: none; }
   }
 
 
@@ -566,6 +574,11 @@
       <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
       <p class="ph-sub"></p>
     </div>
+
+    <a class="feedback-fab" id="feedbackFab" href="https://forms.gle/QuLktePPhQGtGLWt9" target="_blank" rel="noopener noreferrer" aria-label="Give feedback (opens in a new tab)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>Feedback</span>
+    </a>
   </div>
 
   <script>
@@ -583,6 +596,7 @@
     const placeholder = document.getElementById('gamePlaceholder');
     const loading = document.getElementById('gameLoading');
     const progressFill = document.getElementById('progressFill');
+    const feedbackFab = document.getElementById('feedbackFab');
     let unityInstance = null;
 
     // Anonymous load-time and error counters for the admin page (no user info is sent).
@@ -602,6 +616,12 @@
     }
     window.addEventListener('error', (e) => logClientEvent({ type: 'exception', message: String(e.message || e.error || 'error') }));
     window.addEventListener('unhandledrejection', (e) => logClientEvent({ type: 'exception', message: String((e.reason && e.reason.message) || e.reason || 'unhandled rejection') }));
+
+    // The form opens in a new tab; hand keyboard focus back to the game so controls keep working on return.
+    feedbackFab.addEventListener('click', () => {
+      feedbackFab.blur();
+      canvas.focus();
+    });
 
     if (BUILD_NAME) {
       placeholder.style.display = 'none';
@@ -623,6 +643,7 @@
         }).then((instance) => {
           unityInstance = instance;
           loading.classList.remove('show');
+          feedbackFab.classList.add('show');
           logClientEvent({ type: 'game_loaded', seconds: Math.round((performance.now() - loadStartedAt) / 100) / 10 });
         }).catch((err) => {
           logClientEvent({ type: 'game_load_failed', message: String((err && err.message) || err) });
