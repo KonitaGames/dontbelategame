@@ -459,6 +459,114 @@
     border-color: var(--text);
     background: rgba(0,0,0,0.03);
   }
+  .btn:disabled,
+  .btn:disabled:hover {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* ── SIGN-UP ROLE MODAL ── */
+  html:has(.role-modal[open]) { overflow: hidden; }
+  .role-modal {
+    border: none;
+    border-radius: 24px;
+    padding: 0;
+    margin: auto;
+    width: calc(100% - 32px);
+    max-width: 880px;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    background: url('play-loading-bg.jpg') center bottom / cover no-repeat, #4FC3EA;
+    color: var(--text);
+    text-align: center;
+    box-shadow: 0 30px 80px rgba(15,23,42,0.25);
+  }
+  .role-inner { position: relative; padding: 40px 32px 32px; }
+  .role-modal::backdrop {
+    background: rgba(15,23,42,0.55);
+    backdrop-filter: blur(4px);
+  }
+  .role-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 72px;
+    height: 72px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #fff;
+    font-size: 4.9rem;
+    line-height: 0.7;
+    cursor: pointer;
+    text-shadow: 0 2px 8px rgba(15,23,42,0.45);
+    transition: transform 0.15s;
+  }
+  .role-close:hover { transform: scale(1.12); }
+  .role-title:focus { outline: none; }
+  .role-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    line-height: 1.1;
+    display: table;
+    margin: 0 auto 28px;
+    padding: 0.12em 0.4em 0.02em;
+    background: var(--play);
+    color: var(--text);
+    font-family: 'Alphakind', var(--font-display);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    box-shadow: 0 6px 20px rgba(15,23,42,0.18);
+  }
+  .role-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .role-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #FFF8EA;
+    border: 1px solid rgba(15,23,42,0.06);
+    border-radius: 20px;
+    box-shadow: 0 6px 0 rgba(15,23,42,0.12), 0 20px 40px rgba(15,23,42,0.3);
+    padding: 24px 20px 22px;
+    min-height: 376px;
+  }
+  .role-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    margin: 14px 0 6px;
+  }
+  .role-card p {
+    color: var(--muted);
+    font-size: 0.92rem;
+    margin: 0 0 20px;
+  }
+  .role-card .btn { margin-top: auto; }
+  .role-img {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 108px;
+    height: 78px;
+    object-fit: contain;
+  }
+  .role-legal {
+    margin: 22px 0 0;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-shadow: 0 1px 6px rgba(15,23,42,0.6);
+  }
+  .role-legal a { color: #fff; font-weight: 800; text-decoration: underline; }
+  @media (max-width: 720px) {
+    .role-inner { padding: 36px 16px 20px; }
+    .role-grid { grid-template-columns: 1fr; gap: 14px; }
+    .role-card { min-height: 0; }
+  }
 
   /* ── PARTNER SCHOOLS ── */
   #partners {
@@ -1066,7 +1174,7 @@
         <h2 class="section-heading">Screen time you can <span class="hl hl-blue hl-tl">FEEL</span> <span class="hl hl-blue hl-tr">GOOD</span> about.</h2>
         <p class="section-sub">Your kids get a fun adventure they want to play! Every jump and puzzle builds real math skills, while you see their progress.</p>
         <div class="split-actions">
-          <a href="parents/" class="btn btn-primary">Learn More for Parents</a>
+          <!-- <a href="parents/" class="btn btn-primary">Learn More for Parents</a> -->
           <a href="play/" class="btn btn-bordered">Play Free in Your Browser →</a>
         </div>
       </div>
@@ -1142,9 +1250,37 @@
         <p class="section-sub">Students, parents and teachers can all sign up in under a minute.</p>
       </div>
       <div class="signup-cta reveal">
-        <a href="#" class="btn btn-primary">Create a Free Account →</a>
+        <button type="button" class="btn btn-primary" id="signupOpen" aria-haspopup="dialog">Create a Free Account →</button>
       </div>
     </div>
+
+    <dialog id="signupModal" class="role-modal" aria-labelledby="roleModalTitle">
+      <div class="role-inner">
+      <button type="button" class="role-close" id="signupClose" aria-label="Close">×</button>
+      <h2 class="role-title" id="roleModalTitle" tabindex="-1" autofocus>Who's Signing Up?</h2>
+      <div class="role-grid">
+        <div class="role-card">
+          <img src="signup-student.png" alt="" class="role-img">
+          <h3>I'm a Student</h3>
+          <p>Jump into the game and practice math.</p>
+          <a href="play/" class="btn btn-primary">Play Now</a>
+        </div>
+        <div class="role-card">
+          <img src="signup-teacher.png" alt="" class="role-img">
+          <h3>I'm a Teacher</h3>
+          <p>Set up a class and track student progress.</p>
+          <a href="teacher/dashboard/" class="btn btn-primary">Teacher Sign Up</a>
+        </div>
+        <div class="role-card role-card-soon">
+          <img src="signup-parent.png" alt="" class="role-img">
+          <h3>I'm a Parent</h3>
+          <p>Follow your child's learning at home.</p>
+          <button type="button" class="btn btn-primary" disabled>Coming Soon</button>
+        </div>
+      </div>
+      <p class="role-legal">By signing up, you agree to our <a href="terms/">Terms of Use</a> and <a href="privacy/">Privacy Policy</a>.</p>
+      </div>
+    </dialog>
   </section>
 
   <!-- ═══ AWARDS ═══ -->
@@ -1203,6 +1339,12 @@
   </footer>
 
   <script>
+
+    // Sign-up role modal
+    const signupModal = document.getElementById('signupModal');
+    document.getElementById('signupOpen').addEventListener('click', () => signupModal.showModal());
+    document.getElementById('signupClose').addEventListener('click', () => signupModal.close());
+    signupModal.addEventListener('click', (e) => { if (e.target === signupModal) signupModal.close(); });
 
     // Intersection observer reveals
     const io = new IntersectionObserver((entries) => {

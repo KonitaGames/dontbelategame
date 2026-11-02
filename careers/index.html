@@ -154,7 +154,10 @@
     border-radius: 100px;
     font-weight: 800;
     font-size: 0.95rem;
+    font-family: inherit;
     text-decoration: none;
+    border: none;
+    cursor: pointer;
     transition: transform 0.18s, box-shadow 0.18s;
   }
   .btn-primary {
@@ -530,6 +533,144 @@
     .sf-main { grid-template-columns: 1fr 1fr; gap: 32px 24px; padding: 44px 20px 36px; }
     .sf-bottom-inner { padding: 18px 20px; flex-direction: column; align-items: flex-start; }
   }
+  /* ── CAREERS HERO ── */
+  nav { background: #ffffff; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .aud-hero {
+    position: relative;
+    z-index: 1;
+    background: #0B2540;
+    color: #fff;
+    padding: 140px max(24px, 5vw) 64px;
+  }
+  .aud-hero-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .aud-hero .page-title {
+    font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 18px;
+  }
+  .aud-hero .page-title em { font-style: normal; color: #4DB8FF; }
+  .aud-hero .page-sub {
+    color: rgba(255,255,255,0.86);
+    font-size: 1.1rem;
+    max-width: 560px;
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+  .aud-hero .hero-actions { justify-content: flex-start; margin-bottom: 0; }
+  .btn-light { background: #fff; color: var(--text); }
+  .btn-light:hover { transform: translateY(-2px); }
+  .btn-arrow { width: 14px; height: 14px; }
+  .aud-hero-media {
+    aspect-ratio: 16 / 10;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+  }
+  .aud-hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (max-width: 900px) {
+    .aud-hero-inner { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .aud-hero { padding: 110px 16px 48px; }
+    .aud-hero .page-title { font-size: 2.2rem; }
+    .aud-hero .page-sub { font-size: 0.98rem; }
+  }
+
+  main.careers-main { min-height: 0; padding: 64px 24px 96px; }
+  @media (max-width: 760px) {
+    main.careers-main { padding: 48px 16px 72px; }
+  }
+
+  /* ── CAREERS MESSAGE MODAL ── */
+  html:has(.msg-modal[open]) { overflow: hidden; }
+  .msg-modal {
+    border: none;
+    border-radius: 20px;
+    padding: 0;
+    margin: auto;
+    width: calc(100% - 32px);
+    max-width: 620px;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    background: #fff;
+    color: var(--text);
+    text-align: left;
+    box-shadow: 0 30px 80px rgba(15,23,42,0.25);
+  }
+  .msg-modal::backdrop { background: rgba(15,23,42,0.55); backdrop-filter: blur(4px); }
+  .msg-inner { position: relative; padding: 36px 40px 32px; }
+  .msg-modal h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.6rem;
+    margin: 0 40px 22px 0;
+  }
+  .msg-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .msg-close:hover { color: var(--text); }
+  .msg-modal label { display: block; font-weight: 700; font-size: 0.95rem; margin: 0 0 6px; }
+  .msg-modal .req { color: #E11D48; }
+  .msg-modal input,
+  .msg-modal textarea {
+    display: block;
+    width: 100%;
+    margin: 0 0 18px;
+    padding: 12px 14px;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    resize: vertical;
+  }
+  .msg-modal input:focus,
+  .msg-modal textarea:focus { outline: 2px solid var(--primary); outline-offset: 1px; background: #fff; }
+  .msg-error { color: #E11D48; font-weight: 600; margin: -6px 0 14px; }
+  .msg-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+  .msg-actions .btn:disabled { opacity: 0.6; cursor: wait; }
+  .msg-success { text-align: center; padding: 12px 0 4px; }
+  .msg-success h2 { margin: 0 0 10px; }
+  .msg-success p { color: var(--muted); margin: 0 0 22px; }
+  .link-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  @media (max-width: 560px) {
+    .msg-inner { padding: 32px 20px 24px; }
+  }
+
+  .aud-hero .page-title strong {
+    font-weight: inherit;
+    color: #4DB8FF;
+    -webkit-text-stroke: 0.035em currentColor;
+    paint-order: stroke fill;
+  }
 </style>
 <!-- BEGIN seo-dropin -->
 <link rel="canonical" href="https://www.dontbelategame.com/careers/">
@@ -594,15 +735,58 @@
     <a href="../play/" class="btn btn-primary">Play Now</a>
   </nav>
 
-  <main>
-    <h1 class="page-title display">Careers</h1>
-    <p class="page-sub">We're a small studio making math fun for kids.</p>
+  <section class="aud-hero">
+    <div class="aud-hero-inner">
+      <div class="aud-hero-copy">
+        <h1 class="page-title display">Help us make math <strong>fun</strong></h1>
+        <p class="page-sub">We're a small studio building <strong>Don't Be Late!</strong>, a 3D math game kids actually want to play. We'd love to hear from people who care about games and education.</p>
+        <div class="hero-actions">
+          <button type="button" class="btn btn-primary" data-open-careers aria-haspopup="dialog">Get in Touch <svg class="btn-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+      <div class="aud-hero-media">
+        <img src="../careers-hero.jpg" alt="Student writing in a notebook next to a laptop">
+      </div>
+    </div>
+  </section>
+
+  <main class="careers-main">
 
     <div class="info-card text-block">
       <h2 style="margin-top:0;">No open positions right now</h2>
       <p>We don't have any open roles at the moment. If you're excited about games and education and want to be considered for future openings, send us a note and tell us what you'd love to work on.</p>
-      <p>Email <a href="mailto:support@dontbelategame.com?subject=Careers">support@dontbelategame.com</a> with the subject line "Careers".</p>
+      <p><button type="button" class="link-btn" data-open-careers aria-haspopup="dialog">Send us a message</button> and we'll get back to you.</p>
     </div>
+
+    <dialog id="careersModal" class="msg-modal" aria-labelledby="careersModalTitle">
+      <div class="msg-inner">
+        <button type="button" class="msg-close" data-close-careers aria-label="Close">×</button>
+        <div id="careersFormView">
+          <h2 id="careersModalTitle">Send a message to our team</h2>
+          <form id="careersForm" action="https://formspree.io/f/xlgplwoo" method="POST">
+            <input type="hidden" name="_subject" value="New careers message">
+            <input type="hidden" name="formType" value="careers">
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
+            <label for="cName">Your Name <span class="req">*</span></label>
+            <input id="cName" name="name" type="text" placeholder="Your Name" autocomplete="name" required autofocus>
+            <label for="cEmail">Your Email <span class="req">*</span></label>
+            <input id="cEmail" name="email" type="email" placeholder="Your Email" autocomplete="email" required>
+            <label for="cMessage">Message <span class="req">*</span></label>
+            <textarea id="cMessage" name="message" rows="5" placeholder="Tell us about yourself and what you'd love to work on..." required></textarea>
+            <p class="msg-error" id="careersError" hidden>Something went wrong. Please try again.</p>
+            <div class="msg-actions">
+              <button type="submit" class="btn btn-primary" id="careersSubmit">Send Message</button>
+              <button type="button" class="btn btn-outline" data-close-careers>Cancel</button>
+            </div>
+          </form>
+        </div>
+        <div id="careersSuccess" class="msg-success" hidden>
+          <h2>Message sent!</h2>
+          <p>Thanks for reaching out. We'll get back to you soon.</p>
+          <button type="button" class="btn btn-primary" data-close-careers>Close</button>
+        </div>
+      </div>
+    </dialog>
   </main>
 
   <footer class="site-footer">
@@ -677,5 +861,50 @@
   </script>
 
 <script src="/nav-mobile.js"></script>
+<script>
+  (function () {
+    var modal = document.getElementById('careersModal');
+    var form = document.getElementById('careersForm');
+    var formView = document.getElementById('careersFormView');
+    var success = document.getElementById('careersSuccess');
+    var error = document.getElementById('careersError');
+    var submit = document.getElementById('careersSubmit');
+
+    document.querySelectorAll('[data-open-careers]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        form.reset();
+        formView.hidden = false;
+        success.hidden = true;
+        error.hidden = true;
+        modal.showModal();
+      });
+    });
+    document.querySelectorAll('[data-close-careers]').forEach(function (el) {
+      el.addEventListener('click', function () { modal.close(); });
+    });
+    modal.addEventListener('click', function (e) { if (e.target === modal) modal.close(); });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      error.hidden = true;
+      submit.disabled = true;
+      submit.textContent = 'Sending…';
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      }).then(function (res) {
+        if (!res.ok) throw new Error('Request failed');
+        formView.hidden = true;
+        success.hidden = false;
+      }).catch(function () {
+        error.hidden = false;
+      }).finally(function () {
+        submit.disabled = false;
+        submit.textContent = 'Send Message';
+      });
+    });
+  })();
+</script>
 </body>
 </html>

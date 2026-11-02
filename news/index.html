@@ -5,6 +5,9 @@
 <script>if (location.pathname.endsWith("/index.html")) history.replaceState(null, "", location.pathname.slice(0, -10) + location.search + location.hash);</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap">
 <title>News &amp; Updates — Don't Be Late! | Konita Games</title>
 <meta name="description" content="Product updates, classroom stories and announcements from the Don't Be Late! team at Konita Games.">
 <style>
@@ -433,21 +436,121 @@
     margin-bottom: 14px;
   }
   .text-block a { color: var(--primary); font-weight: 700; }
-  .news-list {
+  /* ── NEWS HERO ── */
+  nav { background: #ffffff; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .aud-hero {
+    position: relative;
+    z-index: 1;
+    background: #0B2540;
+    color: #fff;
+    padding: 140px max(24px, 5vw) 64px;
+  }
+  .aud-hero-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .aud-hero .page-title {
+    font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 18px;
+  }
+  .aud-hero .page-title em { font-style: normal; color: #4DB8FF; }
+  .aud-hero .page-sub {
+    color: rgba(255,255,255,0.86);
+    font-size: 1.1rem;
+    max-width: 560px;
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+  .aud-hero .hero-actions { justify-content: flex-start; margin-bottom: 0; }
+  .btn-light { background: #fff; color: var(--text); }
+  .btn-light:hover { transform: translateY(-2px); }
+  .btn-arrow { width: 14px; height: 14px; }
+  .aud-hero-media {
+    aspect-ratio: 16 / 10;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+  }
+  .aud-hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (max-width: 900px) {
+    .aud-hero-inner { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .aud-hero { padding: 110px 16px 48px; }
+    .aud-hero .page-title { font-size: 2.2rem; }
+    .aud-hero .page-sub { font-size: 0.98rem; }
+  }
+
+  main.news-main { min-height: 0; padding: 64px 24px 96px; }
+  #latest { scroll-margin-top: 110px; }
+  @media (max-width: 760px) {
+    main.news-main { padding: 48px 16px 72px; }
+  }
+  .news-feature {
     width: 100%;
-    max-width: 720px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    max-width: 1320px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 40px;
+    padding: 28px 28px 28px 56px;
+    background: #E3F2FD;
+    border-radius: 20px;
     text-align: left;
   }
+  .news-feature h2 {
+    font-family: 'Roboto', var(--font-body);
+    font-weight: 900;
+    font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+    line-height: 1.25;
+    color: var(--text);
+    margin-bottom: 18px;
+  }
   .news-date {
-    color: #0170B8;
-    font-size: 0.78rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: -8px 0 18px;
+  }
+  .news-feature + .news-feature { margin-top: 32px; }
+  .news-feature-text > p:not(.news-date) {
+    color: #334155;
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 22px;
+  }
+  .news-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 6px;
+    color: var(--text);
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
+    text-decoration: none;
+    border-bottom: 2px solid var(--primary);
+  }
+  .news-more span { font-size: 1.2rem; transition: transform 0.18s; }
+  .news-more:hover span { transform: translateX(4px); }
+  .news-feature-art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 10;
+    padding: 12%;
+    background: #fff;
+    border-radius: 14px;
+  }
+  .news-feature-art img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
   }
 
   @media (max-width: 760px) {
@@ -465,6 +568,8 @@
     .page-title { font-size: 2.2rem; }
     .page-sub { font-size: 0.98rem; }
     .info-grid { grid-template-columns: 1fr; }
+    .news-feature { grid-template-columns: 1fr; gap: 24px; padding: 28px 20px; }
+    .news-feature-art { order: -1; }
     .hero-actions .btn { width: 100%; max-width: 320px; justify-content: center; }
   }
 
@@ -594,22 +699,45 @@
     <a href="../play/" class="btn btn-primary">Play Now</a>
   </nav>
 
-  <main>
-    <h1 class="page-title display">News</h1>
-    <p class="page-sub">Updates from the Don't Be Late! team.</p>
-
-    <div class="news-list">
-      <article class="info-card">
-        <p class="news-date">October 2026</p>
-        <h2>Don't Be Late! is now playable in your browser</h2>
-        <p>Students can now play right on our website with no download. Just head to <a href="../play/">Play Now</a>.</p>
-      </article>
-      <article class="info-card">
-        <p class="news-date">October 2026</p>
-        <h2>Teacher dashboard comes to the web</h2>
-        <p>Teachers can now open the class analytics dashboard in their browser from the <a href="../teacher/dashboard/">Teachers</a> page.</p>
-      </article>
+  <section class="aud-hero">
+    <div class="aud-hero-inner">
+      <div class="aud-hero-copy">
+        <h1 class="page-title display">News <em>&</em> Updates</h1>
+        <p class="page-sub">Awards, product updates and stories from the Konita Games team.</p>
+        <div class="hero-actions">
+          <a href="#latest" class="btn btn-primary">Read the Latest Story <svg class="btn-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+      <div class="aud-hero-media">
+        <img src="../teacher-kids-laptop.jpg" alt="Teacher helping students on a laptop in class">
+      </div>
     </div>
+  </section>
+
+  <main class="news-main">
+    <article class="news-feature" id="latest">
+      <div class="news-feature-text">
+        <h2>Don't Be Late! Wins 1st Place at the ACA Student Entrepreneurship Pitch Competition</h2>
+        <p class="news-date"><time datetime="2026-03-30">03/30/2026</time></p>
+        <p>Founder Berhane Wheeler, representing Konita Games, took first place out of nine finalist teams at the Appalachian College Association's first Student Entrepreneurship for Appalachia pitch competition in Lake Junaluska, NC.</p>
+        <a href="https://acaweb.org/blogs/system/aca-hosts-inaugural-student-entrepreneurship-for-appalachia-pitch-competition" class="news-more" target="_blank" rel="noopener">Read More <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="news-feature-art">
+        <img src="../award-aca.png" alt="Appalachian College Association logo">
+      </div>
+    </article>
+
+    <article class="news-feature">
+      <div class="news-feature-text">
+        <h2>Konita Games Places 2nd at the University of Kentucky Entrepreneurs Bootcamp</h2>
+        <p class="news-date"><time datetime="2025-12-15">12/15/2025</time></p>
+        <p>Konita Games, led by founder Berhane Wheeler, took 2nd place in the Thursday section of the University of Kentucky Von Allmen Center for Entrepreneurship's Fall 2025 Entrepreneurs Bootcamp 1.0, winning $1,100.</p>
+        <a href="https://vace.uky.edu/news/fall-2025-bootcamp-winning-teams" class="news-more" target="_blank" rel="noopener">Read More <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="news-feature-art">
+        <img src="../award-uk.png" alt="University of Kentucky logo">
+      </div>
+    </article>
   </main>
 
   <footer class="site-footer">
