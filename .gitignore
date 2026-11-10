@@ -1,3 +1,5 @@
 # Unity WebGL build files exceed GitHub's 100 MB file limit and are hosted separately
 teacher-analytics/Build/
 play/Build/
+
+functions/node_modules/
