@@ -413,6 +413,25 @@ textarea {
   opacity: 1;
 }
 
+/* ── FIELD ERRORS ── */
+.form-group.has-error input:not([type="checkbox"]),
+.form-group.has-error select,
+.form-group.has-error textarea {
+  border-color: #E5484D;
+  box-shadow: 0 0 0 3px rgba(229,72,77,0.12);
+}
+.form-group.has-error .checkbox-custom { border-color: #E5484D; box-shadow: 0 0 0 3px rgba(229,72,77,0.12); }
+.field-error {
+  grid-column: -2 / -1;
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #D93036;
+}
+.form-consent .field-error { margin-top: 8px; }
+/* The two-column field grid adds a row gap above the message; pull it back under its field */
+.pilot-body .form-group:not(.form-consent) > .field-error { margin-top: -8px; }
+
 /* ── SECTION DIVIDER ── */
 .form-divider {
   height: 1px;
@@ -1169,21 +1188,66 @@ const io = new IntersectionObserver(entries => {
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 // ── FORM SUBMIT ──
+// ── FORM VALIDATION ──
+// Returns the problem with a required field as a message, or '' when the field is fine.
+function fieldError(el) {
+  const value = el.type === 'checkbox' ? '' : el.value.trim();
+  if (el.type === 'checkbox') return el.checked ? '' : 'Please check this box so we can contact you.';
+  if (el.id === 'schoolSelect' && el.disabled) return 'Enter your zip code first, then choose your school.';
+  if (!value) return el.tagName === 'SELECT' ? 'Please choose an option.' : 'This field is required.';
+  if (el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Enter a valid email address, like name@school.org.';
+  if (el.name === 'zip' && !/^\d{5}$/.test(value)) return 'Enter a 5-digit zip code.';
+  return '';
+}
+
+function setFieldError(el, message) {
+  const group = el.closest('.form-group');
+  if (!group) return;
+  let msg = group.querySelector('.field-error');
+  group.classList.toggle('has-error', !!message);
+  el.setAttribute('aria-invalid', message ? 'true' : 'false');
+  if (!message) { if (msg) msg.remove(); return; }
+  if (!msg) {
+    msg = document.createElement('p');
+    msg.className = 'field-error';
+    msg.id = (el.id || el.name) + 'Error';
+    group.appendChild(msg);
+  }
+  msg.textContent = message;
+  el.setAttribute('aria-describedby', msg.id);
+}
+
+// Marks every invalid required field with a message, focuses the first one, and reports whether the form can be sent.
+function validateForm(form) {
+  let first = null;
+  form.querySelectorAll('[required]').forEach(el => {
+    if (el.closest('[hidden]')) return;
+    const message = fieldError(el);
+    setFieldError(el, message);
+    if (message && !first) first = el;
+  });
+  if (first) {
+    first.closest('.form-group').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (!first.disabled) first.focus({ preventScroll: true });
+  }
+  return !first;
+}
+
+// Clears a field's message as soon as it becomes valid.
+document.getElementById('pilotForm').addEventListener('input', clearFixedError);
+document.getElementById('pilotForm').addEventListener('change', clearFixedError);
+function clearFixedError(e) {
+  const el = e.target;
+  if (el.required && el.closest('.has-error') && !fieldError(el)) setFieldError(el, '');
+  // Picking a school makes the zip-dependent school message stale.
+  const school = document.getElementById('schoolSelect');
+  if (el.id === 'zipInput' && school && school.closest('.has-error') && !school.disabled) setFieldError(school, fieldError(school));
+}
+
 document.getElementById('pilotForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
-  // Basic validation highlights
-  let valid = true;
-  this.querySelectorAll('[required]').forEach(el => {
-    if ((el.type === 'checkbox' && !el.checked) || (el.type !== 'checkbox' && !el.value.trim())) {
-      el.style.borderColor = 'rgba(255,165,82,0.7)';
-      el.style.boxShadow = '0 0 0 3px rgba(255,165,82,0.12)';
-      valid = false;
-      setTimeout(() => { el.style.borderColor = ''; el.style.boxShadow = ''; }, 2500);
-    }
-  });
-
-  if (!valid) return;
+  if (!validateForm(this)) return;
 
   // Animate button
   const btn = this.querySelector('.submit-btn');
