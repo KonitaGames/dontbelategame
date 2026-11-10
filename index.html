@@ -7,19 +7,14 @@
   <link rel="icon" type="image/png" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Roboto:wght@900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Roboto:wght@900&display=block">
+  <!-- Fonts used above the fold, fetched early so hero text appears sooner -->
+  <link rel="preload" href="Fonts/PlusJakartaSans-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="Fonts/PlusJakartaSans-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="Fonts/PlusJakartaSans-ExtraBold.ttf" as="font" type="font/ttf" crossorigin>
   <title>Don't Be Late! | 3D Math Game for Kids</title>
 <meta name="description" content="A free 3D math platformer for grades 1-8. Kids practise real classroom math in a game they actually want to play. No install — play in your browser.">
-  
-  <style>
-    body { opacity: 0; transition: opacity 0.15s ease; }
-    body.ready { opacity: 1; }
-  </style>
-  <script>
-    document.fonts.ready.then(function() {
-      document.body.classList.add('ready');
-    });
-  </script>
+
   <style>
     /*Add fonts*/
 
@@ -1064,6 +1059,8 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(0,0,0,0.06);
+      transform: translateZ(0);
+      will-change: transform;
     ">
       <div class="nav-left">
         <a href="./">
@@ -1395,10 +1392,7 @@
       });
     }, { threshold: 0.1 });
 
-    // Wait for body to be visible before observing
-    document.fonts.ready.then(function() {
-      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-    });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
     // ── FLOATING MATH SYMBOLS ──
     const symbols = [
