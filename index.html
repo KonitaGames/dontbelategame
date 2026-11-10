@@ -590,12 +590,41 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: stretch;
+    row-gap: 32px;
+  }
+  .partner {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 48px;
+    gap: 12px;
+    margin: 0;
+    padding: 0 48px;
+  }
+  .partner + .partner { border-left: 1px solid rgba(15, 23, 42, 0.12); }
+  /* Each logo sits in a fixed-height frame; --logo-h scales it so logos carry equal visual weight */
+  .partner-logo-frame {
+    height: 112px;
+    display: flex;
+    align-items: center;
   }
   .partner-logo {
-    height: 110px;
+    height: var(--logo-h, 112px);
     width: auto;
+    filter: grayscale(1) brightness(0.75) contrast(1.6);
+  }
+  .partner-caption {
+    color: var(--muted);
+    font-size: 0.74rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .partner-caption strong {
+    display: block;
+    color: #334155;
+    font-size: 0.85rem;
+    font-weight: 700;
   }
   /* ── AWARDS ── */
   #awards {
@@ -649,7 +678,10 @@
     line-height: 1.4;
   }
   @media(max-width: 600px) {
-    .partner-logo { height: 84px; }
+    .partner-logo-frame { height: 84px; }
+    .partner { padding: 0 20px; }
+    .partner + .partner { border-left: none; }
+    .partner-logo { height: calc(var(--logo-h, 112px) * 0.75); }
   }
 
   /* ── SECTION COMMONS ── */
@@ -1130,7 +1162,14 @@
   <section id="partners" class="reveal">
     <p class="partners-label">Piloting with</p>
     <div class="partners-row">
-      <img src="kirksville-blue-jays.png" alt="Kirksville Blue Jays" class="partner-logo">
+      <figure class="partner">
+        <div class="partner-logo-frame"><img src="kirksville-blue-jays.png" alt="Kirksville Elementary Blue Jays" class="partner-logo"></div>
+        <figcaption class="partner-caption"><strong>Kirksville Elementary</strong>Richmond, KY</figcaption>
+      </figure>
+      <figure class="partner">
+        <div class="partner-logo-frame"><img src="kingston-trojans.png" alt="Kingston Elementary Trojans" class="partner-logo" style="--logo-h:104px"></div>
+        <figcaption class="partner-caption"><strong>Kingston Elementary</strong>Berea, KY</figcaption>
+      </figure>
     </div>
   </section>
 
