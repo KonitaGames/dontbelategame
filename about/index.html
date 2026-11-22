@@ -458,7 +458,7 @@
 
   .awards-row {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: flex-start;
     gap: 28px;
@@ -469,7 +469,8 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    width: 240px;
+    flex: 0 1 240px;
+    min-width: 0;
     text-align: center;
   }
   .award-logo {
@@ -493,6 +494,7 @@
     font-size: 1.15rem;
   }
   .award-logo-gsea { width: 175px; }
+  .award-short { display: none; }
   .award-caption {
     color: var(--muted);
     font-size: 0.78rem;
@@ -738,14 +740,24 @@
     height: 220px;
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 0 0 6px #fff, 0 0 0 11px var(--primary), 0 20px 50px rgba(1,151,246,0.28);
+    box-shadow: 0 20px 50px rgba(1,151,246,0.28);
   }
   .founder figcaption { display: flex; flex-direction: column; gap: 4px; text-align: center; }
   .founder-name { font-family: 'Baloo 2', 'Fredoka One', cursive; font-weight: 800; font-size: 1.4rem; color: var(--text); }
   .founder-role { color: var(--muted); font-weight: 600; font-size: 0.95rem; }
   @media (max-width: 600px) {
-    .founders { gap: 36px; }
-    .founder-photo { width: 180px; height: 180px; }
+    .founders, .founders-split { flex-wrap: nowrap; gap: 20px; }
+    .founder { gap: 14px; flex: 1 1 0; min-width: 0; }
+    .founder-photo { width: 136px; height: 136px; }
+    .founder-name { font-size: 1rem; white-space: nowrap; }
+    .founder-role { font-size: 0.82rem; }
+    .awards-row { flex-wrap: nowrap; gap: 12px; }
+    .award { width: auto; flex: 1 1 0; min-width: 0; }
+    .award-logo { height: 52px; }
+    .award-logo-gsea { width: auto; }
+    .award-caption { font-size: 0.68rem; line-height: 1.3; }
+    .award-long { display: none; }
+    .award-short { display: inline; }
   }
 </style>
 <!-- BEGIN seo-dropin -->
@@ -818,8 +830,8 @@
         <p class="page-sub">Founded in 2024, while the founder was still in college, Konita Games is an education technology startup creating <strong>Don't Be Late!</strong>. Fast-forward to 2026, we're now a team of two, piloting the game with local schools across Kentucky.</p>
         <p class="page-sub">We're bringing a new kind of learning experience to classrooms everywhere, where students are excited to practice, teachers can track progress, and learning feels <strong>FUN</strong>.</p>
       </div>
-      <div class="aud-hero-media aud-hero-logo">
-        <img src="../mission-kg-dark.png" alt="Konita Games logo">
+      <div class="aud-hero-media">
+        <img src="../about-founders.jpg" alt="Berhane Wheeler and Alpha Nyabuto, founders of Konita Games, in Don't Be Late! shirts">
       </div>
     </div>
   </section>
@@ -871,17 +883,17 @@
       <div class="container ab-center">
         <span class="label-box ab-awards-label">Awards &amp; Recognition</span>
         <div class="awards-row">
-          <figure class="award">
+          <figure class="award" title="Appalachian College Association: 1st Place, 2026">
             <img src="../award-aca.png" alt="Appalachian College Association logo" class="award-logo">
-            <figcaption class="award-caption">Appalachian College Association<br>1st Place · 2026</figcaption>
+            <figcaption class="award-caption"><span class="award-long">Appalachian College Association<br>1st Place · 2026</span><span class="award-short">1st Place · 2026</span></figcaption>
           </figure>
-          <figure class="award">
+          <figure class="award" title="GSEA Nashville: 3rd Place and Audience Favorite, 2026">
             <img src="../award-gsea.png" alt="Global Student Entrepreneur Awards logo" class="award-logo award-logo-gsea">
-            <figcaption class="award-caption">Global Student Entrepreneur Awards<br>3rd Place &amp; Audience Favorite · 2026</figcaption>
+            <figcaption class="award-caption"><span class="award-long">GSEA Nashville<br>3rd Place &amp; Audience Favorite · 2026</span><span class="award-short">Nashville 3rd + Fan Favorite · 2026</span></figcaption>
           </figure>
-          <figure class="award">
+          <figure class="award" title="University of Kentucky Bootcamp 2.0: Winner, Spring 2026">
             <img src="../award-uk.png" alt="University of Kentucky logo" class="award-logo">
-            <figcaption class="award-caption">University of Kentucky<br>Bootcamp 2.0 Winner · Spring 2026</figcaption>
+            <figcaption class="award-caption"><span class="award-long">University of Kentucky<br>Bootcamp 2.0 Winner · Spring 2026</span><span class="award-short">Bootcamp Winner · 2026</span></figcaption>
           </figure>
         </div>
       </div>
