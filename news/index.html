@@ -550,7 +550,21 @@
     max-height: 100%;
     object-fit: contain;
   }
-
+  .news-press {
+    margin: -14px 0 40px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .news-press a { color: #0170B8; text-decoration: none; }
+  .news-press a:hover { text-decoration: underline; }
+  .news-feature-art.news-feature-photo { padding: 0; overflow: hidden; }
+  .news-feature-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
   @media (max-width: 760px) {
     nav { padding: 12px 16px; }
     nav img { height: 40px !important; }
@@ -702,6 +716,7 @@
       <div class="aud-hero-copy">
         <h1 class="page-title display">News <em>&</em> Updates</h1>
         <p class="page-sub">Awards, product updates and stories from the Konita Games team.</p>
+        <p class="news-press">News inquiries: <a href="mailto:news@dontbelategame.com">news@dontbelategame.com</a></p>
         <div class="hero-actions">
           <a href="#latest" class="btn btn-primary">Read the Latest Story <svg class="btn-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
@@ -715,13 +730,25 @@
   <main class="news-main">
     <article class="news-feature" id="latest">
       <div class="news-feature-text">
+        <h2>Richmond Register: Berea College Students Launch Don't Be Late!</h2>
+        <p class="news-date"><time datetime="2026-11-19">11/19/2026</time></p>
+        <p>The Richmond Register covers how two Berea College students built Don't Be Late!, a 3D platformer where players race from home to school while solving math problems, now live at Kingston and Kirksville Elementary.</p>
+        <a href="https://www.richmondregister.com/news/dont-be-late-berea-college-students-launch-educational-video-game/article_62b4ff77-8eee-46e4-be38-ca523fe10f7a.html" class="news-more" target="_blank" rel="noopener">Read More <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="news-feature-art news-feature-photo">
+        <img src="../news-richmond-register.webp" alt="The two Berea College students behind Don't Be Late! in matching Don't Be Late! polo shirts">
+      </div>
+    </article>
+
+    <article class="news-feature">
+      <div class="news-feature-text">
         <h2>Don't Be Late! Wins 1st Place at the ACA Student Entrepreneurship Pitch Competition</h2>
         <p class="news-date"><time datetime="2026-03-30">03/30/2026</time></p>
         <p>Founder Berhane Wheeler, representing Konita Games, took first place out of nine finalist teams at the Appalachian College Association's first Student Entrepreneurship for Appalachia pitch competition in Lake Junaluska, NC.</p>
         <a href="https://acaweb.org/blogs/system/aca-hosts-inaugural-student-entrepreneurship-for-appalachia-pitch-competition" class="news-more" target="_blank" rel="noopener">Read More <span aria-hidden="true">→</span></a>
       </div>
-      <div class="news-feature-art">
-        <img src="../award-aca.png" alt="Appalachian College Association logo">
+      <div class="news-feature-art news-feature-photo">
+        <img src="../news-aca-pitch.jpg" alt="Berhane Wheeler with judges and finalists at the ACA Student Entrepreneurship for Appalachia pitch competition" style="object-position: center 62%;">
       </div>
     </article>
 
